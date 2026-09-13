@@ -11,6 +11,14 @@ export default defineConfig({
   site: 'https://booker2022.vercel.app',
   integrations: [mdx(), sitemap()],
 
+  markdown: {
+    shikiConfig: {
+      // 淺色主題，配合紙感配色
+      theme: 'github-light',
+      wrap: true,
+    },
+  },
+
   fonts: [
       {
           provider: fontProviders.local(),

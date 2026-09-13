@@ -1,86 +1,288 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+import PageLayout from './PageLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
-	</head>
+<PageLayout title={`${title} — 布克小姐的文學天地`} description={description}>
 
-	<body>
-		<Header />
-		<main>
-			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+  <article class="post">
+
+    <!-- 標題區 -->
+    <header class="post-head">
+      <div class="post-head-inner">
+        <a href="/blog" class="post-back">← 返回文章列表</a>
+        <h1 class="post-title">{title}</h1>
+        {description && <p class="post-desc">{description}</p>}
+        <div class="post-meta">
+          <FormattedDate date={pubDate} />
+          {updatedDate && (
+            <>
+              <span class="post-meta-dot">・</span>
+              <span class="post-updated">更新於 <FormattedDate date={updatedDate} /></span>
+            </>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <!-- 主視覺 -->
+    {heroImage && (
+      <div class="post-hero">
+        <div class="post-hero-inner">
+          <Image width={1020} height={510} src={heroImage} alt="" />
+        </div>
+      </div>
+    )}
+
+    <!-- 內文 -->
+    <div class="post-body">
+      <div class="prose">
+        <slot />
+      </div>
+
+      <footer class="post-foot">
+        <span class="seal post-seal" aria-hidden="true">布克</span>
+        <a href="/blog" class="post-foot-link">閱讀其他文章 →</a>
+      </footer>
+    </div>
+
+  </article>
+
+</PageLayout>
+
+<style>
+  /* ── 標題區 ── */
+  .post-head {
+    padding: 4rem 2rem 2.5rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .post-head-inner {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .post-back {
+    display: inline-block;
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    margin-bottom: 1.8rem;
+    transition: color 0.2s;
+  }
+  .post-back:hover { color: var(--brown-deep); }
+  .post-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.6;
+    letter-spacing: 0.06em;
+    margin: 0 0 1rem;
+  }
+  .post-desc {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--ink-muted);
+    line-height: 2.1;
+    letter-spacing: 0.05em;
+    margin: 0 0 1.4rem;
+  }
+  .post-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+  }
+  .post-meta-dot { opacity: 0.45; }
+  .post-updated { font-size: 0.76rem; opacity: 0.8; }
+
+  /* ── 主視覺 ── */
+  .post-hero {
+    padding: 2.5rem 2rem 0;
+  }
+  .post-hero-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid var(--hairline-strong);
+    padding: 8px;
+    background: var(--paper-blush);
+  }
+  .post-hero-inner :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── 內文 ── */
+  .post-body { padding: 3rem 2rem 5rem; }
+  .prose {
+    max-width: 720px;
+    margin: 0 auto;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.02rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 2.3;
+    letter-spacing: 0.045em;
+  }
+
+  .prose :global(p) {
+    margin: 0 0 1.9rem;
+    line-height: 2.3;
+  }
+  .prose :global(h2) {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.1em;
+    margin: 3rem 0 1.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .prose :global(h3) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.1em;
+    margin: 2.4rem 0 1rem;
+  }
+  .prose :global(h4) {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+    margin: 2rem 0 0.8rem;
+  }
+  .prose :global(a) {
+    color: var(--brown);
+    border-bottom: 1px solid var(--hairline-strong);
+    padding-bottom: 0.1rem;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .prose :global(a:hover) {
+    color: var(--brown-deep);
+    border-bottom-color: var(--brown);
+  }
+  .prose :global(strong) { color: var(--ink); font-weight: 600; }
+  .prose :global(em) { font-style: normal; color: var(--brown-deep); }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 1.9rem;
+    padding-left: 1.4rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.7rem;
+    line-height: 2.2;
+  }
+  .prose :global(li)::marker { color: var(--brown); }
+
+  .prose :global(blockquote) {
+    border-left: 2px solid var(--brown);
+    padding: 0.3rem 0 0.3rem 1.5rem;
+    margin: 2.2rem 0;
+    font-size: 1rem;
+    color: var(--ink-muted);
+    font-style: normal;
+  }
+  .prose :global(blockquote p:last-child) { margin-bottom: 0; }
+
+  .prose :global(img) {
+    width: 100%;
+    height: auto;
+    margin: 2.4rem 0;
+    border: 1px solid var(--hairline);
+  }
+  .prose :global(figure) { margin: 2.4rem 0; }
+  .prose :global(figcaption) {
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+    text-align: center;
+    letter-spacing: 0.08em;
+    margin-top: 0.7rem;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--hairline);
+    margin: 3rem 0;
+  }
+
+  .prose :global(code) {
+    font-size: 0.88em;
+    background: var(--paper-deep);
+    padding: 0.15em 0.4em;
+    border-radius: 2px;
+    letter-spacing: 0;
+  }
+  .prose :global(pre) {
+    background: var(--paper-warm);
+    border: 1px solid var(--hairline);
+    padding: 1.3rem 1.5rem;
+    border-radius: 2px;
+    overflow-x: auto;
+    margin: 2.2rem 0;
+    line-height: 1.75;
+  }
+  .prose :global(pre code) {
+    background: transparent;
+    padding: 0;
+    font-size: 0.86rem;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.2rem 0;
+    font-size: 0.9rem;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    border-bottom: 1px solid var(--hairline);
+    padding: 0.7rem 0.8rem;
+    text-align: left;
+  }
+  .prose :global(th) {
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    border-bottom-color: var(--hairline-strong);
+  }
+
+  /* ── 文末 ── */
+  .post-foot {
+    max-width: 720px;
+    margin: 4rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .post-seal { font-size: 0.72rem; }
+  .post-foot-link {
+    font-size: 0.8rem;
+    color: var(--brown);
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .post-foot-link:hover { color: var(--brown-deep); }
+
+  @media (max-width: 640px) {
+    .post-head { padding: 2.5rem 1.5rem 2rem; }
+    .post-body { padding: 2.2rem 1.5rem 3.5rem; }
+    .prose { font-size: 0.98rem; line-height: 2.15; }
+  }
+</style>
