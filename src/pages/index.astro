@@ -17,7 +17,7 @@ const pillars = CATEGORIES.map(c => ({
 }));
 ---
 
-<PageLayout title="布克小姐的文學天地 — 投資・健身・文學" description="一個關於投資智慧、科學健身與知識文學的溫暖角落">
+<PageLayout title="布克小姐｜Booker — 金錢・生活・閱讀・成長" description="關於金錢、富足、生活、閱讀、成長與人生，一邊生活、一邊思考，也一邊尋找答案。">
 
   <!-- ══════════════════════════════════
        HERO：直排標題 × 印章
@@ -26,7 +26,7 @@ const pillars = CATEGORIES.map(c => ({
     <div class="hero-inner">
 
       <div class="hero-left">
-        <p class="hero-side" aria-hidden="true">投資・健身・文學</p>
+        <p class="hero-side" aria-hidden="true">金錢・生活・閱讀・成長</p>
         <div class="hero-vwrap">
           <h1 class="hero-vtitle">
             <span class="vcol">用文字耕耘</span>
@@ -37,12 +37,13 @@ const pillars = CATEGORIES.map(c => ({
       </div>
 
       <div class="hero-right">
-        <p class="label-en">Wealth · Body · Literature</p>
-        <h2 class="hero-name">布克小姐的文學天地</h2>
+        <p class="label-en">Money · Life · Reading · Growth</p>
+        <h2 class="hero-name">布克小姐｜Booker</h2>
         <p class="hero-desc">
-          每一篇文章，都是一次真誠的對話。<br />
-          關於財富的智慧、身體的語言，<br />
-          以及書頁間流淌的光。
+          <span class="ph">我們如何度過每一天，</span><span class="ph">當然也就是我們如何度過一生。</span><br />
+          <span class="ph">關於金錢、富足、生活、</span><span class="ph">閱讀、成長與人生，</span><br />
+          <span class="ph">一邊生活、一邊思考，</span><span class="ph">也一邊尋找答案。</span><br />
+          <span class="ph">慢慢把人生過成自己喜歡的樣子。🌱</span>
         </p>
         <div class="hero-cta">
           <a href="/blog" class="btn-primary">開始閱讀</a>
@@ -151,13 +152,13 @@ const pillars = CATEGORIES.map(c => ({
         <span class="label-en">About</span>
         <h2 class="section-title">一個愛書、愛運動<br />也愛思考財富的人</h2>
         <p class="about-intro">
-          我相信「閱讀是最低成本的自我投資」。十多年來在投資、健身與文學三個領域持續探索，尋找它們共同的內核——長期主義，以及對複利思維的深刻信仰。
+          我相信「閱讀是最低成本的自我投資」。在金錢、生活、閱讀與自我成長之間持續探索，尋找它們共同的內核——長期主義，以及對複利思維的深刻信仰。
         </p>
         <div class="about-tags">
-          <span class="about-tag">價值投資</span>
-          <span class="about-tag">肌力訓練</span>
-          <span class="about-tag">文學閱讀</span>
-          <span class="about-tag">深度寫作</span>
+          <span class="about-tag">金錢觀念</span>
+          <span class="about-tag">生活日記</span>
+          <span class="about-tag">閱讀筆記</span>
+          <span class="about-tag">自我成長</span>
         </div>
         <a href="/about" class="btn-primary">了解更多</a>
       </div>
@@ -169,7 +170,7 @@ const pillars = CATEGORIES.map(c => ({
   ══════════════════════════════════ -->
   <section id="s-newsletter" class="newsletter-section">
     <div class="newsletter-inner">
-      <h2 class="newsletter-title">訂閱文學天地電子報</h2>
+      <h2 class="newsletter-title">訂閱布克小姐電子報</h2>
       <p class="newsletter-desc">每兩週一封，精選最值得閱讀的文章與思考片段。不濫發，不喧嘩。</p>
       <form class="newsletter-form" action="#" method="post">
         <input type="email" class="newsletter-input" placeholder="你的電子郵件地址" aria-label="電子郵件地址" required />
@@ -582,9 +583,13 @@ const pillars = CATEGORIES.map(c => ({
     .hero-stats { flex-wrap: wrap; gap: 1rem 0; }
     .stat { padding: 0 1.4rem; }
   }
+  /* 副標題只在逗號後換行，避免窄螢幕把一兩個字擠到下一行 */
+  .hero-desc .ph { display: inline-block; }
+
   @media (max-width: 560px) {
     .newsletter-form { flex-direction: column; align-items: stretch; }
     .hero-side { display: none; }
+    .hero-right .label-en { letter-spacing: 0.16em; }
   }
 </style>
 

@@ -3,20 +3,18 @@ import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import PageLayout from './PageLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import { categoryMeta, type Category } from '../lib/posts';
 
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage, category, tags } = Astro.props;
 
-const categoryLabel = {
-  investment: '投資策略',
-  fitness: '科學健身',
-  literature: '知識文學',
-  life: '生活隨筆',
-} as const;
+const categoryLabel = Object.fromEntries(
+  Object.entries(categoryMeta).map(([slug, meta]) => [slug, meta.short]),
+) as Record<Category, string>;
 ---
 
-<PageLayout title={`${title} — 布克小姐的文學天地`} description={description}>
+<PageLayout title={`${title} — 布克小姐｜Booker`} description={description}>
 
   <article class="post">
 

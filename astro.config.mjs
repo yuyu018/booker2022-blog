@@ -11,6 +11,13 @@ export default defineConfig({
   site: 'https://booker2022.vercel.app',
   integrations: [mdx(), sitemap()],
 
+  // 舊分類網址已上線過，轉址避免外部連結失效
+  redirects: {
+    '/blog/investment': '/blog/money',
+    '/blog/literature': '/blog/reading',
+    '/blog/fitness': '/blog',
+  },
+
   markdown: {
     shikiConfig: {
       // 淺色主題，配合紙感配色
