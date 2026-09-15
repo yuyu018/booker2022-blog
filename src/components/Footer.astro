@@ -7,7 +7,7 @@ const today = new Date();
 
     <!-- Brand -->
     <div class="footer-brand">
-      <p class="footer-logo">布克小姐｜Booker</p>
+      <p class="footer-logo"><span class="ph">布克小姐｜</span><span class="ph">再富養自己一次人生實驗室</span></p>
       <p class="footer-tagline">用文字記錄思考，以閱讀照亮前路。</p>
     </div>
 
@@ -43,7 +43,7 @@ const today = new Date();
 
   <!-- Bottom bar -->
   <div class="footer-bottom">
-    <p class="footer-copy">© {today.getFullYear()} 布克小姐｜Booker・版權所有</p>
+    <p class="footer-copy">© {today.getFullYear()} 布克小姐・版權所有</p>
   </div>
 </footer>
 
@@ -73,6 +73,7 @@ const today = new Date();
     margin: 0 0 0.8rem;
     letter-spacing: 0.14em;
   }
+  .footer-logo .ph { display: inline-block; }
   .footer-tagline {
     font-size: 0.8rem;
     line-height: 2;
