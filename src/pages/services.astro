@@ -5,39 +5,39 @@ import PageHero from '../components/PageHero.astro';
 const services = [
   {
     num: '壹',
-    en: 'INVESTMENT CONSULTING',
-    title: '投資策略諮詢',
-    desc: '以價值投資為核心，協助你建立屬於自己的選股邏輯與資產配置框架。不追熱點、不跟風，只幫你找到適合長期持有的好公司。',
-    items: ['個人投資組合健診', '選股邏輯建立', '風險承受度評估', '長期財務規劃討論'],
+    en: 'WRITING',
+    title: '文章授權與邀稿',
+    desc: '金錢觀念、閱讀筆記與生活隨筆的文章，歡迎洽談轉載授權，或依主題邀稿。',
+    items: ['文章轉載授權', '主題專欄邀稿', '社群圖文合作', '電子報內容合作'],
   },
   {
     num: '貳',
-    en: 'FITNESS COACHING',
-    title: '科學健身指導',
-    desc: '依據運動科學原理，為你量身設計訓練計畫。從動作矯正到週期化訓練，幫助你建立可持續的健身習慣。',
-    items: ['個人化訓練計畫設計', '動作技術指導', '營養搭配建議', '訓練進度追蹤'],
+    en: 'READING',
+    title: '閱讀心得與書籍合作',
+    desc: '讀完一本書，我習慣把畫線的句子和自己的生活連在一起寫下來。歡迎出版社與讀書會邀約。',
+    items: ['新書閱讀心得', '書單推薦', '讀書會分享', '出版社合作'],
   },
   {
     num: '參',
-    en: 'READING COMPANION',
-    title: '閱讀陪伴計畫',
-    desc: '為忙碌的現代人打造專屬閱讀清單，並提供深度導讀與讀書會主持服務。讓閱讀不再是孤獨的事，而是一場有人同行的思想旅程。',
-    items: ['個人化書單推薦', '每月深度導讀報告', '線上讀書會主持', '書摘與重點整理'],
+    en: 'TALKS',
+    title: '經驗分享與訪談',
+    desc: '從月光族走到指數投資、上班族如何替自己安排成長，樂意用真實經驗和大家聊聊。',
+    items: ['Podcast 訪談', '線上社團分享', '生活理財經驗分享', '自我成長主題對談'],
   },
   {
     num: '肆',
-    en: 'WRITING & SPEAKING',
-    title: '寫作課程與演講',
-    desc: '分享知識寫作、部落格經營與個人品牌建立的實戰經驗。無論你是想開始寫作的新手，還是希望突破瓶頸的創作者，都歡迎一起探討。',
-    items: ['知識寫作工作坊', '部落格從零開始課程', '企業內訓演講', '一對一寫作指導'],
+    en: 'COLLABORATION',
+    title: '品牌與生活選品',
+    desc: '只分享自己真心使用、理念相符的書籍、課程與生活用品。',
+    items: ['產品體驗分享', '課程心得', '生活選品推薦', '合作洽談'],
   },
 ];
 ---
 
-<PageLayout title="服務項目 — 布克小姐｜再富養自己一次人生實驗室" description="投資策略諮詢、科學健身指導、閱讀陪伴計畫與寫作課程">
+<PageLayout title="服務項目 — 布克小姐｜再富養一次" description="文章授權與邀稿、閱讀心得與書籍合作、經驗分享與訪談、品牌與生活選品">
 
   <PageHero label="Our Services" labelZh="服務項目" titleHtml="我能為你<em>做什麼</em>">
-    多年來在投資、健身與文學三個領域的深耕，讓我有機會把這些積累轉化為對你有價值的服務。
+    我是一個上班族，也是一個持續記錄生活的寫作者。以下是我樂意參與的合作方式，歡迎來信聊聊。
   </PageHero>
 
   <section class="services-section">
@@ -56,10 +56,11 @@ const services = [
                 <li class="service-item">{item}</li>
               ))}
             </ul>
-            <a href="/contact" class="service-cta">預約諮詢 →</a>
+            <a href="/contact" class="service-cta">來信洽談 →</a>
           </div>
         </div>
       ))}
+      <p class="services-note">金錢相關文章皆為個人經驗分享，不提供個別投資建議或代客操作。</p>
     </div>
   </section>
 
@@ -144,6 +145,16 @@ const services = [
     transition: color 0.2s, border-color 0.2s;
   }
   .service-cta:hover { color: var(--brown-deep); border-bottom-color: var(--brown); }
+
+  .services-note {
+    margin: 2.5rem 0 0;
+    padding: 0.9rem 1.2rem;
+    border-left: 2px solid var(--hairline-strong);
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+    line-height: 2;
+  }
 
   .services-cta-band {
     padding: 4.5rem 2rem;
