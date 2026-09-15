@@ -29,6 +29,7 @@ import HeaderLink from './HeaderLink.astro';
             <a href="/blog/investment" role="menuitem">投資策略分析</a>
             <a href="/blog/fitness" role="menuitem">科學健身指導</a>
             <a href="/blog/literature" role="menuitem">知識文學分享</a>
+            <a href="/blog/life" role="menuitem">生活隨筆</a>
             <a href="/blog" role="menuitem" class="dropdown-all">所有文章 →</a>
           </div>
         </li>
@@ -53,6 +54,7 @@ import HeaderLink from './HeaderLink.astro';
       <li><a href="/blog/investment" class="mobile-sub">投資策略分析</a></li>
       <li><a href="/blog/fitness" class="mobile-sub">科學健身指導</a></li>
       <li><a href="/blog/literature" class="mobile-sub">知識文學分享</a></li>
+      <li><a href="/blog/life" class="mobile-sub">生活隨筆</a></li>
       <li><a href="/blog" class="mobile-sub">所有文章</a></li>
       <li><a href="/about">關於我們</a></li>
       <li><a href="/contact">聯絡資訊</a></li>
@@ -225,7 +227,7 @@ import HeaderLink from './HeaderLink.astro';
     background: var(--paper);
     border-top: 1px solid var(--hairline);
   }
-  .mobile-menu.open { max-height: 520px; }
+  .mobile-menu.open { max-height: calc(100dvh - 62px); overflow-y: auto; }
   .mobile-links {
     list-style: none;
     margin: 0;

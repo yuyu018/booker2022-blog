@@ -29,6 +29,7 @@ const today = new Date();
         <li><a href="/blog/investment">投資策略分析</a></li>
         <li><a href="/blog/fitness">科學健身指導</a></li>
         <li><a href="/blog/literature">知識文學分享</a></li>
+        <li><a href="/blog/life">生活隨筆</a></li>
         <li><a href="/blog">所有文章</a></li>
       </ul>
     </div>
@@ -125,11 +126,11 @@ const today = new Date();
   .footer-bottom p { margin: 0; }
 
   @media (max-width: 768px) {
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
     .footer-brand { grid-column: 1 / -1; }
     .footer-seal-col { display: none; }
-  }
-  @media (max-width: 480px) {
-    .footer-inner { grid-template-columns: 1fr; }
+    .footer-col-title { font-size: 0.7rem; margin-bottom: 0.3rem; }
+    .footer-links { gap: 0; }
+    .footer-links a { display: block; padding: 0.6rem 0; }
   }
 </style>

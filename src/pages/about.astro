@@ -281,7 +281,8 @@ const beliefs = [
 
   @media (max-width: 820px) {
     .about-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-    .portrait-paper { max-width: 230px; }
+    /* 限制外層寬度，印章才會貼在肖像框角落而非螢幕右緣 */
+    .about-portrait { max-width: 230px; }
     .story-block { grid-template-columns: 1fr; gap: 0.8rem; padding: 2rem 0; }
     .beliefs-grid { grid-template-columns: 1fr; gap: 1.8rem; }
   }

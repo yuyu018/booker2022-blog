@@ -289,8 +289,18 @@ table     { width: 100%; }
 .writing-meta .m-cat { color: var(--brown); font-weight: 500; }
 
 @media (max-width: 720px) {
-  .writing-row { grid-template-columns: 48px 1fr; }
-  .writing-meta { grid-column: 2; margin-top: 0.35rem; }
+  .writing-row { grid-template-columns: 2rem 1fr; gap: 0.2rem 0.9rem; padding: 1.3rem 0; }
+  .writing-num { font-size: 1.15rem; }
+  .writing-title { font-size: 1rem; }
+  .writing-excerpt {
+    font-size: 0.84rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .writing-meta { grid-column: 2; margin-top: 0.45rem; font-size: 0.78rem; }
+  .label-en { font-size: 0.72rem; letter-spacing: 0.32em; }
 }
 
 /* ── BLOG CONTENT ── */

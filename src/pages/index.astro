@@ -1,19 +1,20 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import { articles } from '../data/articles';
+import { CATEGORIES, categoryMeta, getPosts, monthLabel, postUrl, readTime, type Post } from '../lib/posts';
 
-/* 首頁精選：每個分類取一篇 */
-const featured = [
-  articles.find(a => a.categorySlug === 'investment')!,
-  articles.find(a => a.categorySlug === 'fitness')!,
-  articles.find(a => a.categorySlug === 'literature')!,
-];
+const posts = await getPosts();
 
-const pillars = [
-  { num: '壹', title: '投資策略', desc: '以十年為單位思考財富，在複利中安放焦慮。', href: '/blog/investment' },
-  { num: '貳', title: '科學健身', desc: '讓身體成為最誠實的作品，一次訓練，一次累積。', href: '/blog/fitness' },
-  { num: '參', title: '知識文學', desc: '在書頁間與偉大靈魂相遇，借他人之眼看世界。', href: '/blog/literature' },
-];
+/* 首頁精選：每個分類取最新一篇 */
+const featured = CATEGORIES
+  .map(c => posts.find(p => p.data.category === c))
+  .filter((p): p is Post => p !== undefined);
+
+const pillars = CATEGORIES.map(c => ({
+  num: categoryMeta[c].num,
+  title: categoryMeta[c].short,
+  desc: categoryMeta[c].pillar,
+  href: `/blog/${c}`,
+}));
 ---
 
 <PageLayout title="布克小姐的文學天地 — 投資・健身・文學" description="一個關於投資智慧、科學健身與知識文學的溫暖角落">
@@ -57,7 +58,7 @@ const pillars = [
             <span class="stat-label">本閱讀書目</span>
           </div>
           <div class="stat">
-            <span class="stat-num">100+</span>
+            <span class="stat-num">{posts.length}</span>
             <span class="stat-label">篇原創文章</span>
           </div>
         </div>
@@ -68,11 +69,11 @@ const pillars = [
   </section>
 
   <!-- ══════════════════════════════════
-       內容支柱 THREE PILLARS
+       內容支柱 FOUR PILLARS
   ══════════════════════════════════ -->
   <section id="s-pillars" class="pillars-section">
     <div class="section-inner">
-      <span class="label-en">Three Pillars</span>
+      <span class="label-en">Four Pillars</span>
       <h2 class="section-title">內容支柱</h2>
       <div class="pillars-grid">
         {pillars.map(p => (
@@ -101,17 +102,17 @@ const pillars = [
         <a href="/blog" class="writings-all">查看所有文章 →</a>
       </div>
       <div class="writings-list">
-        {featured.map((a, i) => (
-          <a href={`/blog/${a.categorySlug}`} class="writing-row scroll-reveal" style={`--delay:${i * 0.12}s`}>
+        {featured.map((p, i) => (
+          <a href={postUrl(p)} class="writing-row scroll-reveal" style={`--delay:${i * 0.12}s`}>
             <span class="writing-num">0{i + 1}</span>
             <div>
-              <h3 class="writing-title">{a.title}</h3>
-              <p class="writing-excerpt">{a.excerpt}</p>
+              <h3 class="writing-title">{p.data.title}</h3>
+              <p class="writing-excerpt">{p.data.description}</p>
             </div>
             <div class="writing-meta">
-              <span class="m-cat">{a.category}</span><span class="m-dot">・</span>
-              <span>{a.readTime}</span><span class="m-dot">・</span>
-              <span>{a.date}</span>
+              {p.data.category && <><span class="m-cat">{categoryMeta[p.data.category].short}</span><span class="m-dot">・</span></>}
+              <span>{readTime(p)}</span><span class="m-dot">・</span>
+              <span>{monthLabel(p.data.pubDate)}</span>
             </div>
           </a>
         ))}
@@ -214,7 +215,12 @@ const pillars = [
     padding-right: 1.1rem;
     height: 220px;
   }
-  .hero-vwrap { position: relative; }
+  .hero-vwrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
   .hero-vtitle {
     writing-mode: vertical-rl;
     font-family: 'Noto Serif TC', serif;
@@ -227,12 +233,7 @@ const pillars = [
   }
   .vcol { display: block; white-space: nowrap; }
   .vcol-2 { margin-top: 2.6rem; margin-right: 0.9rem; color: var(--brown-deep); }
-  .hero-seal {
-    position: absolute;
-    left: -0.6rem;
-    bottom: -1.2rem;
-    font-size: 1.05rem;
-  }
+  .hero-seal { font-size: 1.05rem; }
 
   /* 右：資訊區 */
   .hero-name {
@@ -301,9 +302,12 @@ const pillars = [
   }
   .pillars-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.4rem;
     margin-top: 2.2rem;
+  }
+  @media (max-width: 1080px) {
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 2.4rem 3rem; }
   }
   .pillar {
     border-top: 1px solid var(--hairline-strong);
@@ -558,8 +562,18 @@ const pillars = [
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 3.5rem; padding-top: 3.5rem; }
-    .hero-left { justify-content: flex-start; order: 2; }
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; padding-top: 3rem; }
+    .hero-left {
+      justify-content: center;
+      order: 2;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--hairline);
+    }
+    /* iOS Safari 對小於 16px 的輸入框會在聚焦時自動放大畫面 */
+    .newsletter-input { font-size: 16px; }
+    /* 擴大觸控範圍到約 44px，不改變外觀 */
+    .writings-all { position: relative; }
+    .writings-all::after { content: ''; position: absolute; inset: -8px -8px; }
     .hero-right { order: 1; }
     .hero-texture { display: none; }
     .pillars-grid { grid-template-columns: 1fr; gap: 2rem; }

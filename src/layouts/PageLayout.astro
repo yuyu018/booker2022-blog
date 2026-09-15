@@ -25,7 +25,9 @@ const { title, description } = Astro.props;
   </body>
 
   <script>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    /* 觸控裝置點擊會觸發 mouseover 卻不觸發 mouseleave，傾斜會卡住，只在滑鼠裝置啟用 */
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const applied = new WeakSet();
 
       function applyTilt(el: HTMLElement) {

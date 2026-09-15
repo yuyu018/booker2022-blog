@@ -1,14 +1,14 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from './PageHero.astro';
-import { byCategory, categoryMeta, type MockArticle } from '../data/articles';
+import { categoryMeta, getPostsByCategory, monthLabel, postUrl, readTime, type Category } from '../lib/posts';
 
 interface Props {
-  slug: MockArticle['categorySlug'];
+  slug: Category;
 }
 const { slug } = Astro.props;
 const meta = categoryMeta[slug];
-const posts = byCategory(slug);
+const posts = await getPostsByCategory(slug);
 ---
 
 <PageLayout title={`${meta.title} — 布克小姐的文學天地`} description={meta.desc}>
@@ -20,22 +20,27 @@ const posts = byCategory(slug);
   <section class="cat-list-section">
     <div class="section-inner">
       <div class="cat-count">共 {posts.length} 篇文章</div>
-      {posts.map((a, i) => (
-        <article class="writing-row">
+
+      {posts.length === 0 && (
+        <p class="cat-empty">這個主題的文章正在醞釀中。</p>
+      )}
+
+      {posts.map((p, i) => (
+        <a href={postUrl(p)} class="writing-row">
           <span class="writing-num">{String(i + 1).padStart(2, '0')}</span>
           <div>
-            <h3 class="writing-title">{a.title}</h3>
-            <p class="writing-excerpt">{a.excerpt}</p>
+            <h3 class="writing-title">{p.data.title}</h3>
+            <p class="writing-excerpt">{p.data.description}</p>
           </div>
           <div class="writing-meta">
-            <span>{a.readTime}</span><span class="m-dot">・</span>
-            <span>{a.date}</span>
+            <span>{readTime(p)}</span><span class="m-dot">・</span>
+            <span>{monthLabel(p.data.pubDate)}</span>
           </div>
-        </article>
+        </a>
       ))}
 
       <div class="cat-more">
-        <p class="cat-more-text">更多文章即將發布，歡迎訂閱電子報，第一時間收到更新。</p>
+        <p class="cat-more-text">持續更新中，歡迎訂閱電子報，第一時間收到新文章。</p>
         <div class="cat-more-cta">
           <a href="/#s-newsletter" class="btn-primary">訂閱電子報</a>
           <a href="/blog" class="btn-secondary">瀏覽其他主題</a>
@@ -53,6 +58,13 @@ const posts = byCategory(slug);
     color: var(--ink-muted);
     letter-spacing: 0.2em;
     margin-bottom: 1.4rem;
+  }
+  .cat-empty {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    padding: 2rem 0;
+    border-top: 1px solid var(--hairline);
   }
   .cat-more {
     margin-top: 3.5rem;

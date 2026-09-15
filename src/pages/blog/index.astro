@@ -1,45 +1,48 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import PageHero from '../../components/PageHero.astro';
-import { articles, categoryMeta } from '../../data/articles';
+import { CATEGORIES, categoryMeta, getPosts, monthLabel, postUrl, readTime } from '../../lib/posts';
 
-const groups = (['investment', 'fitness', 'literature'] as const).map(slug => ({
+const PER_GROUP = 5;
+const posts = await getPosts();
+
+const groups = CATEGORIES.map(slug => ({
   slug,
   meta: categoryMeta[slug],
-  posts: articles.filter(a => a.categorySlug === slug),
+  posts: posts.filter(p => p.data.category === slug),
 }));
 ---
 
-<PageLayout title="所有文章 — 布克小姐的文學天地" description="投資策略、科學健身與知識文學的所有文章總覽">
+<PageLayout title="所有文章 — 布克小姐的文學天地" description="投資策略、科學健身、知識文學與生活隨筆的所有文章總覽">
 
   <PageHero label="All Writings" labelZh="文章總覽" titleHtml="所有文章">
-    從財富、身體到精神，每個面向都值得細細探索。用文字留住思考的痕跡。
+    從財富、身體、閱讀到日常生活，共 {posts.length} 篇文章。用文字留住思考的痕跡。
   </PageHero>
 
   <section class="archive-section">
     <div class="section-inner">
-      {groups.map((g, gi) => (
+      {groups.map(g => (
         <div class="archive-group">
           <div class="archive-group-head">
             <div>
               <span class="label-en">{g.meta.labelEn}</span>
               <h2 class="archive-group-title">
-                <span class="archive-group-num">{['壹', '貳', '參'][gi]}</span>
+                <span class="archive-group-num">{g.meta.num}</span>
                 {g.meta.title}
               </h2>
             </div>
-            <a href={`/blog/${g.slug}`} class="archive-group-link">進入主題 →</a>
+            <a href={`/blog/${g.slug}`} class="archive-group-link">全部 {g.posts.length} 篇 →</a>
           </div>
-          {g.posts.slice(0, 3).map((a, i) => (
-            <a href={`/blog/${g.slug}`} class="writing-row">
+          {g.posts.slice(0, PER_GROUP).map((p, i) => (
+            <a href={postUrl(p)} class="writing-row">
               <span class="writing-num">{String(i + 1).padStart(2, '0')}</span>
               <div>
-                <h3 class="writing-title">{a.title}</h3>
-                <p class="writing-excerpt">{a.excerpt}</p>
+                <h3 class="writing-title">{p.data.title}</h3>
+                <p class="writing-excerpt">{p.data.description}</p>
               </div>
               <div class="writing-meta">
-                <span>{a.readTime}</span><span class="m-dot">・</span>
-                <span>{a.date}</span>
+                <span>{readTime(p)}</span><span class="m-dot">・</span>
+                <span>{monthLabel(p.data.pubDate)}</span>
               </div>
             </a>
           ))}
