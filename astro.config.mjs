@@ -8,7 +8,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://booker2022.vercel.app',
+  site: 'https://missbooker.com',
   integrations: [mdx(), sitemap()],
 
   // 舊分類網址已上線過，轉址避免外部連結失效
