@@ -9,6 +9,7 @@ const today = new Date();
     <div class="footer-brand">
       <p class="footer-logo"><span class="ph">布克小姐｜</span><span class="ph">再富養一次</span></p>
       <p class="footer-tagline">用文字記錄思考，以閱讀照亮前路。</p>
+      <span class="seal footer-seal" aria-hidden="true">布克</span>
     </div>
 
     <!-- Nav -->
@@ -34,11 +35,6 @@ const today = new Date();
       </ul>
     </div>
 
-    <!-- Seal -->
-    <div class="footer-seal-col">
-      <span class="seal footer-seal" aria-hidden="true">布克</span>
-    </div>
-
   </div>
 
   <!-- Bottom bar -->
@@ -49,48 +45,46 @@ const today = new Date();
 
 <style>
   .site-footer {
-    background: #2b2115;
-    color: rgba(240, 232, 216, 0.62);
-    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-    padding: 4rem 2rem 0;
+    background: var(--bg-soft);
+    color: var(--ink-soft);
+    padding: 5rem 2rem 0;
+    margin-top: var(--space-section);
   }
 
   .footer-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.7fr 1fr 1fr auto;
+    grid-template-columns: 1.7fr 1fr 1fr;
     gap: 3rem;
     padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(240, 232, 216, 0.1);
+    border-bottom: 1px solid var(--line);
   }
 
   .footer-logo {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.05rem;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
     font-weight: 600;
-    color: rgba(246, 240, 228, 0.95);
-    margin: 0 0 0.8rem;
-    letter-spacing: 0.14em;
+    color: var(--ink);
+    margin: 0 0 0.7rem;
+    letter-spacing: 0.06em;
   }
   .footer-logo .ph { display: inline-block; }
   .footer-tagline {
-    font-size: 0.8rem;
-    line-height: 2;
-    color: rgba(240, 232, 216, 0.42);
-    margin: 0;
-    letter-spacing: 0.08em;
-    max-width: 280px;
+    font-size: 0.88rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: 0 0 1.4rem;
+    max-width: 320px;
   }
+  .footer-seal { font-size: 0.68rem; }
 
   .footer-col-title {
-    font-family: 'Lora', serif;
-    font-size: 0.64rem;
-    font-weight: 500;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: rgba(240, 232, 216, 0.35);
-    margin: 0 0 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink);
+    margin: 0 0 1rem;
   }
   .footer-links {
     list-style: none;
@@ -98,39 +92,30 @@ const today = new Date();
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.7rem;
   }
   .footer-links a {
-    font-size: 0.83rem;
-    color: rgba(240, 232, 216, 0.55);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    transition: color 0.2s;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    transition: color 0.25s ease;
   }
-  .footer-links a:hover { color: #d8b98a; }
-
-  .footer-seal-col {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
-  }
-  .footer-seal { font-size: 1.02rem; }
+  .footer-links a:hover { color: var(--accent); }
 
   .footer-bottom {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
-    padding: 1.4rem 0 1.8rem;
-    font-size: 0.74rem;
-    letter-spacing: 0.1em;
-    color: rgba(240, 232, 216, 0.28);
+    padding: 1.6rem 0 2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
   }
   .footer-bottom p { margin: 0; }
 
   @media (max-width: 768px) {
+    .site-footer { padding: 3.5rem 1.5rem 0; }
     .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem 1.5rem; }
     .footer-brand { grid-column: 1 / -1; }
-    .footer-seal-col { display: none; }
-    .footer-col-title { font-size: 0.7rem; margin-bottom: 0.3rem; }
     .footer-links { gap: 0; }
     .footer-links a { display: block; padding: 0.6rem 0; }
   }
