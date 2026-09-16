@@ -5,8 +5,13 @@ import HeaderLink from './HeaderLink.astro';
 <header class="navbar">
   <div class="nav-inner">
     <!-- Logo -->
-    <a href="/" class="nav-logo">
-      布克小姐<span class="nav-logo-dot">・</span>Booker
+    <a href="/" class="nav-logo" aria-label="布克小姐 Booker：金錢、生活、閱讀、成長、人生。記錄生活 × 思考金錢 × 設計自己的人生">
+      <img class="nav-avatar" src="/booker-avatar.png" alt="" width="256" height="256" decoding="async" />
+      <img class="nav-name" src="/booker-name.png" alt="" decoding="async" />
+      <span class="nav-taglines" aria-hidden="true">
+        <span class="nav-tag-main">金錢｜生活｜閱讀｜成長｜人生</span>
+        <span class="nav-tag-sub">記錄生活 × 思考金錢 × 設計自己的人生</span>
+      </span>
     </a>
 
     <!-- Desktop Nav -->
@@ -78,14 +83,19 @@ import HeaderLink from './HeaderLink.astro';
     max-width: 1160px;
     margin: 0 auto;
     padding: 0 2rem;
-    height: 62px;
+    height: 84px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    transition: height 0.3s ease;
   }
+  .navbar.scrolled .nav-inner { height: 62px; }
 
   /* ── LOGO ── */
   .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: 'Noto Serif TC', serif;
     font-weight: 600;
     font-size: 1.02rem;
@@ -97,6 +107,43 @@ import HeaderLink from './HeaderLink.astro';
   }
   .nav-logo:hover { color: var(--brown); }
   .nav-logo-dot { color: var(--seal-red); margin: 0 1px; }
+  /* 「布克小姐／BOOKER」用原圖保留原始字體；下面兩行小字改用文字排版才看得清楚 */
+  .nav-avatar {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    transition: width 0.3s ease, height 0.3s ease, transform 0.25s ease;
+  }
+  .nav-logo:hover .nav-avatar { transform: scale(1.06); }
+  .nav-name {
+    height: 44px;
+    width: auto;
+    display: block;
+    transition: height 0.3s ease;
+  }
+  .nav-taglines {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-left: 0.85rem;
+    margin-left: 0.15rem;
+    border-left: 1px solid var(--hairline-strong);
+    font-family: 'LXGW WenKai TC', 'Noto Serif TC', serif;
+    font-weight: 700;
+  }
+  .nav-tag-main {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--ink-soft);
+  }
+  .nav-tag-sub {
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+  }
+  .navbar.scrolled .nav-avatar { width: 34px; height: 34px; }
+  .navbar.scrolled .nav-name { height: 30px; }
+  .navbar.scrolled .nav-taglines { display: none; }
 
   /* ── DESKTOP NAV ── */
   .nav-links {
@@ -264,6 +311,10 @@ import HeaderLink from './HeaderLink.astro';
   }
 
   @media (max-width: 768px) {
+    .nav-inner, .navbar.scrolled .nav-inner { height: 62px; }
+    .nav-avatar, .navbar.scrolled .nav-avatar { width: 32px; height: 32px; }
+    .nav-name, .navbar.scrolled .nav-name { height: 28px; }
+    .nav-taglines { display: none; }
     .nav-links { display: none; }
     .hamburger { display: flex; }
     .mobile-menu { display: block; }
@@ -272,6 +323,11 @@ import HeaderLink from './HeaderLink.astro';
 
 <script>
   const navbar = document.querySelector('.navbar');
+
+  // ── 捲動後縮小導覽列，換成精簡商標 ──
+  const setScrolled = () => navbar?.classList.toggle('scrolled', window.scrollY > 8);
+  setScrolled();
+  window.addEventListener('scroll', setScrolled, { passive: true });
 
   // ── Mobile hamburger toggle ──
   const hamburger = document.getElementById('hamburger');

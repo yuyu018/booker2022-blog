@@ -42,7 +42,7 @@ const beliefs = [
     <div class="about-hero-inner">
       <div class="about-portrait">
         <div class="portrait-paper">
-          <span class="portrait-char" aria-hidden="true">布</span>
+          <img class="portrait-img" src="/booker-avatar.png" alt="布克小姐" width="256" height="256" decoding="async" />
           <span class="portrait-caption">作者・布克小姐</span>
         </div>
         <span class="seal about-seal" aria-hidden="true">布克</span>
@@ -54,7 +54,7 @@ const beliefs = [
           上班族、指數投資人、瑜珈師資，也是還在學日文的學生。相信富足不只是存款數字，而是用每一天，慢慢把人生過成自己喜歡的樣子。
         </p>
         <div class="about-tags">
-<span class="about-tag">指數投資</span>
+          <span class="about-tag">指數投資</span>
           <span class="about-tag">瑜珈師資</span>
           <span class="about-tag">一對一重訓</span>
           <span class="about-tag">寫日記</span>
@@ -148,13 +148,10 @@ const beliefs = [
     border: 1px solid var(--hairline);
     pointer-events: none;
   }
-  .portrait-char {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 6rem;
-    font-weight: 600;
-    color: var(--brown);
-    opacity: 0.5;
-    line-height: 1;
+  .portrait-img {
+    width: 74%;
+    height: auto;
+    display: block;
   }
   .portrait-caption {
     font-size: 0.72rem;

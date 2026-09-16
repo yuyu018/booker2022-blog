@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '../consts';
 import { Font } from 'astro:assets';
 
@@ -12,7 +11,10 @@ interface Props {
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const { title, description, image = FallbackImage } = Astro.props;
+const { title, description, image } = Astro.props;
+
+/* 未指定圖片時，社群分享預覽使用品牌形象圖 */
+const ogImage = new URL(image?.src ?? '/og-booker.png', Astro.url);
 ---
 
 <!-- Charset & Viewport -->
@@ -20,8 +22,8 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 <!-- Sitemap & RSS -->
 <link rel="sitemap" href="/sitemap-index.xml" />
@@ -35,7 +37,7 @@ const { title, description, image = FallbackImage } = Astro.props;
 <!-- Generator -->
 <meta name="generator" content={Astro.generator} />
 
-<!-- Astro Font (保留原有設定) -->
+<!-- Astro Font（保留原有設定） -->
 <Font cssVariable="--font-atkinson" preload />
 
 <!-- Google Fonts：設計系統字體 -->
@@ -43,6 +45,11 @@ const { title, description, image = FallbackImage } = Astro.props;
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
   href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+TC:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
+<!-- 導覽列標語用：接近品牌圖楷書手寫風格，載入失敗會退回思源宋體 -->
+<link
+  href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap"
   rel="stylesheet"
 />
 
@@ -59,7 +66,8 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:alt" content={SITE_TITLE} />
 <meta property="og:locale" content="zh_TW" />
 <meta property="og:site_name" content={SITE_TITLE} />
 
@@ -68,5 +76,4 @@ const { title, description, image = FallbackImage } = Astro.props;
 <meta name="twitter:url" content={Astro.url} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image.src, Astro.url)} />
-
+<meta name="twitter:image" content={ogImage} />

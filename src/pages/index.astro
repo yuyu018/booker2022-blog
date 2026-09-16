@@ -128,8 +128,7 @@ const pillars = CATEGORIES.map(c => ({
     <div class="quote-inner">
       <span class="quote-label scroll-reveal" style="--delay:0s">摘　句</span>
       <blockquote class="quote-text scroll-reveal" style="--delay:0.15s">
-        閱讀是一種孤獨的行動，卻也是最深刻的相遇——<br />
-        你在每一個句子裡，都能找到另一個更完整的自己。
+        富有是天賦，快樂是人權
       </blockquote>
       <p class="quote-author scroll-reveal" style="--delay:0.3s">
         — 布克小姐 <span class="seal quote-seal" aria-hidden="true">布克</span>
@@ -144,7 +143,7 @@ const pillars = CATEGORIES.map(c => ({
     <div class="about-inner">
       <div class="about-portrait">
         <div class="portrait-paper">
-          <span class="portrait-char" aria-hidden="true">布</span>
+          <img class="portrait-img" src="/booker-avatar.png" alt="布克小姐" width="256" height="256" decoding="async" />
           <span class="portrait-caption">作者・布克小姐</span>
         </div>
       </div>
@@ -446,13 +445,10 @@ const pillars = CATEGORIES.map(c => ({
     border: 1px solid var(--hairline);
     pointer-events: none;
   }
-  .portrait-char {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 6.5rem;
-    font-weight: 600;
-    color: var(--brown);
-    opacity: 0.5;
-    line-height: 1;
+  .portrait-img {
+    width: 74%;
+    height: auto;
+    display: block;
   }
   .portrait-caption {
     font-size: 0.72rem;
