@@ -2,6 +2,9 @@
 
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import react from '@astrojs/react';
+import keystatic from '@keystatic/astro';
+import vercel from '@astrojs/vercel';
 import { defineConfig, fontProviders } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -9,7 +12,10 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://missbooker.com',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), react(), keystatic()],
+
+  // 文章頁面仍然是靜態產生；只有寫稿後台 /keystatic 需要伺服器功能
+  adapter: vercel(),
 
   // 舊分類網址已上線過，轉址避免外部連結失效
   redirects: {

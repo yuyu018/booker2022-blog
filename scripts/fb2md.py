@@ -238,11 +238,14 @@ OUT_MD.mkdir(parents=True)
 OUT_IMG.mkdir(parents=True)
 
 for x in selected:
+    # 圖片放進以文章代號命名的子資料夾——Keystatic 後台只認得這種結構
     img_names = []
+    img_dir = OUT_IMG / x['slug']
     for i, uri in enumerate(x['imgs'], 1):
         name = f"{x['slug']}-{i}.jpg"
-        shutil.copyfile(EXPORT / uri, OUT_IMG / name)
-        img_names.append(name)
+        img_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(EXPORT / uri, img_dir / name)
+        img_names.append(f"{x['slug']}/{name}")
     fm = [
         '---',
         f"title: {json.dumps(x['title'], ensure_ascii=False)}",

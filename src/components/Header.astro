@@ -1,5 +1,7 @@
 ---
 import HeaderLink from './HeaderLink.astro';
+import { site } from '../lib/site';
+import { CATEGORIES, categoryMeta } from '../lib/posts';
 ---
 
 <header class="navbar">
@@ -9,22 +11,22 @@ import HeaderLink from './HeaderLink.astro';
       <img class="nav-avatar" src="/booker-avatar.png" alt="" width="256" height="256" decoding="async" />
       <img class="nav-name" src="/booker-name.png" alt="" decoding="async" />
       <span class="nav-taglines" aria-hidden="true">
-        <span class="nav-tag-main">金錢｜生活｜閱讀｜成長｜人生</span>
-        <span class="nav-tag-sub">記錄生活 × 思考金錢 × 設計自己的人生</span>
-        <span class="nav-tag-slogan">🌱 富有是天賦，快樂是人權 🌱</span>
+        <span class="nav-tag-main">{site.navTagMain}</span>
+        <span class="nav-tag-sub">{site.navTagSub}</span>
+        <span class="nav-tag-slogan">{site.navTagSlogan}</span>
       </span>
     </a>
 
     <!-- Desktop Nav -->
     <nav>
       <ul class="nav-links">
-        <li><HeaderLink href="/" class="nav-item">首頁</HeaderLink></li>
-        <li><HeaderLink href="/services" class="nav-item">服務項目</HeaderLink></li>
+        <li><HeaderLink href="/" class="nav-item">{site.navHome}</HeaderLink></li>
+        <li><HeaderLink href="/services" class="nav-item">{site.navServices}</HeaderLink></li>
 
         <!-- 精選文章 Dropdown -->
         <li class="nav-dropdown">
           <button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">
-            精選文章
+            {site.navBlog}
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
               fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -32,16 +34,15 @@ import HeaderLink from './HeaderLink.astro';
             </svg>
           </button>
           <div class="dropdown-menu" role="menu">
-            <a href="/blog/money" role="menuitem">金錢</a>
-            <a href="/blog/life" role="menuitem">生活</a>
-            <a href="/blog/reading" role="menuitem">閱讀</a>
-            <a href="/blog/growth" role="menuitem">自我成長</a>
-            <a href="/blog" role="menuitem" class="dropdown-all">所有文章 →</a>
+            {CATEGORIES.map(c => (
+              <a href={`/blog/${c}`} role="menuitem">{categoryMeta[c].title}</a>
+            ))}
+            <a href="/blog" role="menuitem" class="dropdown-all">{site.navAllPosts} →</a>
           </div>
         </li>
 
-        <li><HeaderLink href="/about" class="nav-item">關於我們</HeaderLink></li>
-        <li><HeaderLink href="/contact" class="nav-item">聯絡資訊</HeaderLink></li>
+        <li><HeaderLink href="/about" class="nav-item">{site.navAbout}</HeaderLink></li>
+        <li><HeaderLink href="/contact" class="nav-item">{site.navContact}</HeaderLink></li>
       </ul>
     </nav>
 
@@ -54,16 +55,15 @@ import HeaderLink from './HeaderLink.astro';
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
     <ul class="mobile-links">
-      <li><a href="/">首頁</a></li>
-      <li><a href="/services">服務項目</a></li>
-      <li class="mobile-group-label">精選文章</li>
-      <li><a href="/blog/money" class="mobile-sub">金錢</a></li>
-      <li><a href="/blog/life" class="mobile-sub">生活</a></li>
-      <li><a href="/blog/reading" class="mobile-sub">閱讀</a></li>
-      <li><a href="/blog/growth" class="mobile-sub">自我成長</a></li>
-      <li><a href="/blog" class="mobile-sub">所有文章</a></li>
-      <li><a href="/about">關於我們</a></li>
-      <li><a href="/contact">聯絡資訊</a></li>
+      <li><a href="/">{site.navHome}</a></li>
+      <li><a href="/services">{site.navServices}</a></li>
+      <li class="mobile-group-label">{site.navBlog}</li>
+      {CATEGORIES.map(c => (
+        <li><a href={`/blog/${c}`} class="mobile-sub">{categoryMeta[c].title}</a></li>
+      ))}
+      <li><a href="/blog" class="mobile-sub">{site.navAllPosts}</a></li>
+      <li><a href="/about">{site.navAbout}</a></li>
+      <li><a href="/contact">{site.navContact}</a></li>
     </ul>
   </div>
 </header>

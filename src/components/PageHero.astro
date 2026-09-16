@@ -1,17 +1,18 @@
 ---
 interface Props {
-  label: string;      /* 英文眉標，如 OUR SERVICES */
-  labelZh?: string;   /* 中文小標（可省略） */
-  titleHtml: string;
+  label: string;        /* 英文眉標，如 OUR SERVICES */
+  labelZh?: string;     /* 中文小標（可省略） */
+  title: string;
+  titleAccent?: string; /* 標題後半段，會用強調色顯示 */
 }
-const { label, labelZh, titleHtml } = Astro.props;
+const { label, labelZh, title, titleAccent } = Astro.props;
 ---
 
 <section class="page-hero">
   <div class="page-hero-inner">
     <span class="label-en">{label}</span>
     {labelZh && <span class="page-hero-zh">{labelZh}</span>}
-    <h1 class="page-hero-title" set:html={titleHtml} />
+    <h1 class="page-hero-title">{title}{titleAccent && <em>{titleAccent}</em>}</h1>
     <p class="page-hero-desc"><slot /></p>
   </div>
 </section>

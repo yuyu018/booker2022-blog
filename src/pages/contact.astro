@@ -1,33 +1,13 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
-
-const channels = [
-  {
-    num: '壹',
-    title: '電子郵件',
-    desc: '最直接的聯絡方式，通常在 2–3 個工作天內回覆。',
-    link: { href: 'mailto:hello@example.com', text: 'hello@example.com' },
-  },
-  {
-    num: '貳',
-    title: '合作邀約',
-    desc: '演講、課程、文章合作或品牌業配，歡迎附上相關資訊。',
-    link: { href: 'mailto:collab@example.com', text: 'collab@example.com' },
-  },
-  {
-    num: '參',
-    title: '社群媒體',
-    desc: '日常思考片段與閱讀紀錄，歡迎追蹤互動。',
-    link: { href: 'https://twitter.com/', text: '@booker_writes' },
-  },
-];
+import { contactText as t, numeral } from '../lib/site';
 ---
 
-<PageLayout title="聯絡資訊 — 布克小姐｜再富養一次" description="與布克小姐聯絡，歡迎合作邀約、讀者交流或任何想法分享">
+<PageLayout title={t.seoTitle} description={t.seoDescription}>
 
-  <PageHero label="Get in Touch" labelZh="聯絡資訊" titleHtml="讓我們開始<em>對話</em>">
-    無論是合作邀約、讀者回饋，還是單純想聊聊書與投資，都歡迎寫信給我。每一封信我都會親自閱讀。
+  <PageHero label={t.heroLabelEn} labelZh={t.heroLabelZh} title={t.heroTitle} titleAccent={t.heroTitleAccent}>
+    {t.heroDesc}
   </PageHero>
 
   <section class="contact-section">
@@ -35,56 +15,52 @@ const channels = [
 
       <!-- 左：聯絡方式 -->
       <div class="contact-info">
-        {channels.map(c => (
+        {t.channels.map((c, i) => (
           <div class="channel">
-            <span class="channel-num">{c.num}</span>
+            <span class="channel-num">{numeral(i)}</span>
             <div>
               <h3 class="channel-title">{c.title}</h3>
               <p class="channel-desc">{c.desc}</p>
-              <a href={c.link.href} class="channel-link" target={c.link.href.startsWith('http') ? '_blank' : undefined} rel={c.link.href.startsWith('http') ? 'noopener' : undefined}>{c.link.text}</a>
+              <a href={c.linkHref} class="channel-link" target={c.linkHref.startsWith('http') ? '_blank' : undefined} rel={c.linkHref.startsWith('http') ? 'noopener' : undefined}>{c.linkText}</a>
             </div>
           </div>
         ))}
-        <p class="contact-note">若是讀者問題或文章回饋，也可以直接在文章底部留言，我同樣會看到。</p>
+        <p class="contact-note">{t.note}</p>
       </div>
 
       <!-- 右：表單 -->
       <div class="contact-form-wrap">
-        <span class="label-en">Send a Message</span>
-        <h2 class="form-title">傳送訊息</h2>
+        <span class="label-en">{t.formLabelEn}</span>
+        <h2 class="form-title">{t.formTitle}</h2>
 
-        <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <form class="contact-form" action={t.formAction} method="POST">
           <div class="form-row">
             <div class="form-group">
-              <label for="name" class="form-label">姓名</label>
-              <input type="text" id="name" name="name" class="form-input" placeholder="你的名字" required />
+              <label for="name" class="form-label">{t.labelName}</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder={t.placeholderName} required />
             </div>
             <div class="form-group">
-              <label for="email" class="form-label">電子郵件</label>
-              <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required />
+              <label for="email" class="form-label">{t.labelEmail}</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder={t.placeholderEmail} required />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="subject" class="form-label">主旨</label>
+            <label for="subject" class="form-label">{t.labelSubject}</label>
             <select id="subject" name="subject" class="form-input form-select">
-              <option value="">請選擇聯絡類型</option>
-              <option value="reader">讀者回饋</option>
-              <option value="collab">合作邀約</option>
-              <option value="money">金錢話題交流</option>
-              <option value="life">生活話題交流</option>
-              <option value="reading">閱讀話題交流</option>
-              <option value="growth">自我成長話題交流</option>
-              <option value="other">其他</option>
+              {/* 第一項是提示文字，選了不會送出內容 */}
+              {t.subjectOptions.map((opt, i) => (
+                <option value={i === 0 ? '' : opt}>{opt}</option>
+              ))}
             </select>
           </div>
 
           <div class="form-group">
-            <label for="message" class="form-label">訊息內容</label>
-            <textarea id="message" name="message" class="form-input form-textarea" rows="6" placeholder="請輸入你想說的話……" required></textarea>
+            <label for="message" class="form-label">{t.labelMessage}</label>
+            <textarea id="message" name="message" class="form-input form-textarea" rows="6" placeholder={t.placeholderMessage} required></textarea>
           </div>
 
-          <button type="submit" class="btn-primary form-submit">送出訊息</button>
+          <button type="submit" class="btn-primary form-submit">{t.submitLabel}</button>
         </form>
       </div>
 

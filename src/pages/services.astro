@@ -1,51 +1,21 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from '../components/PageHero.astro';
-
-const services = [
-  {
-    num: '壹',
-    en: 'WRITING',
-    title: '文章授權與邀稿',
-    desc: '金錢觀念、閱讀筆記與生活隨筆的文章，歡迎洽談轉載授權，或依主題邀稿。',
-    items: ['文章轉載授權', '主題專欄邀稿', '社群圖文合作', '電子報內容合作'],
-  },
-  {
-    num: '貳',
-    en: 'READING',
-    title: '閱讀心得與書籍合作',
-    desc: '讀完一本書，我習慣把畫線的句子和自己的生活連在一起寫下來。歡迎出版社與讀書會邀約。',
-    items: ['新書閱讀心得', '書單推薦', '讀書會分享', '出版社合作'],
-  },
-  {
-    num: '參',
-    en: 'TALKS',
-    title: '經驗分享與訪談',
-    desc: '從月光族走到指數投資、上班族如何替自己安排成長，樂意用真實經驗和大家聊聊。',
-    items: ['Podcast 訪談', '線上社團分享', '生活理財經驗分享', '自我成長主題對談'],
-  },
-  {
-    num: '肆',
-    en: 'COLLABORATION',
-    title: '品牌與生活選品',
-    desc: '只分享自己真心使用、理念相符的書籍、課程與生活用品。',
-    items: ['產品體驗分享', '課程心得', '生活選品推薦', '合作洽談'],
-  },
-];
+import { servicesText as t, numeral } from '../lib/site';
 ---
 
-<PageLayout title="服務項目 — 布克小姐｜再富養一次" description="文章授權與邀稿、閱讀心得與書籍合作、經驗分享與訪談、品牌與生活選品">
+<PageLayout title={t.seoTitle} description={t.seoDescription}>
 
-  <PageHero label="Our Services" labelZh="服務項目" titleHtml="我能為你<em>做什麼</em>">
-    我是一個上班族，也是一個持續記錄生活的寫作者。以下是我樂意參與的合作方式，歡迎來信聊聊。
+  <PageHero label={t.heroLabelEn} labelZh={t.heroLabelZh} title={t.heroTitle} titleAccent={t.heroTitleAccent}>
+    {t.heroDesc}
   </PageHero>
 
   <section class="services-section">
     <div class="section-inner">
-      {services.map(s => (
+      {t.services.map((s, i) => (
         <div class="service-block">
           <div class="service-side">
-            <span class="service-num">{s.num}</span>
+            <span class="service-num">{numeral(i)}</span>
             <span class="label-en service-en">{s.en}</span>
           </div>
           <div class="service-main">
@@ -56,19 +26,19 @@ const services = [
                 <li class="service-item">{item}</li>
               ))}
             </ul>
-            <a href="/contact" class="service-cta">來信洽談 →</a>
+            <a href="/contact" class="service-cta">{t.itemCtaLabel}</a>
           </div>
         </div>
       ))}
-      <p class="services-note">金錢相關文章皆為個人經驗分享，不提供個別投資建議或代客操作。</p>
+      <p class="services-note">{t.note}</p>
     </div>
   </section>
 
   <section class="services-cta-band">
     <div class="services-cta-inner">
-      <h2 class="services-cta-title">找不到你需要的服務？</h2>
-      <p class="services-cta-desc">直接寫信告訴我你的需求，我們可以一起討論最適合的合作方式。</p>
-      <a href="/contact" class="btn-primary">與我聯絡</a>
+      <h2 class="services-cta-title">{t.ctaTitle}</h2>
+      <p class="services-cta-desc">{t.ctaDesc}</p>
+      <a href="/contact" class="btn-primary">{t.ctaButton}</a>
     </div>
   </section>
 

@@ -1,4 +1,7 @@
 ---
+import { site, phrases } from '../lib/site';
+import { CATEGORIES, categoryMeta } from '../lib/posts';
+
 const today = new Date();
 ---
 
@@ -7,31 +10,30 @@ const today = new Date();
 
     <!-- Brand -->
     <div class="footer-brand">
-      <p class="footer-logo"><span class="ph">布克小姐｜</span><span class="ph">再富養一次</span></p>
-      <p class="footer-tagline">用文字記錄思考，以閱讀照亮前路。</p>
+      <p class="footer-logo">{phrases(site.siteTitle).map(s => <span class="ph">{s}</span>)}</p>
+      <p class="footer-tagline">{site.footerTagline}</p>
       <span class="seal footer-seal" aria-hidden="true">布克</span>
     </div>
 
     <!-- Nav -->
     <div class="footer-col">
-      <p class="footer-col-title">快速導覽</p>
+      <p class="footer-col-title">{site.footerNavTitle}</p>
       <ul class="footer-links">
-        <li><a href="/">首頁</a></li>
-        <li><a href="/services">服務項目</a></li>
-        <li><a href="/about">關於我們</a></li>
-        <li><a href="/contact">聯絡資訊</a></li>
+        <li><a href="/">{site.navHome}</a></li>
+        <li><a href="/services">{site.navServices}</a></li>
+        <li><a href="/about">{site.navAbout}</a></li>
+        <li><a href="/contact">{site.navContact}</a></li>
       </ul>
     </div>
 
     <!-- Blog -->
     <div class="footer-col">
-      <p class="footer-col-title">精選文章</p>
+      <p class="footer-col-title">{site.footerBlogTitle}</p>
       <ul class="footer-links">
-        <li><a href="/blog/money">金錢</a></li>
-        <li><a href="/blog/life">生活</a></li>
-        <li><a href="/blog/reading">閱讀</a></li>
-        <li><a href="/blog/growth">自我成長</a></li>
-        <li><a href="/blog">所有文章</a></li>
+        {CATEGORIES.map(c => (
+          <li><a href={`/blog/${c}`}>{categoryMeta[c].title}</a></li>
+        ))}
+        <li><a href="/blog">{site.navAllPosts}</a></li>
       </ul>
     </div>
 
@@ -39,7 +41,7 @@ const today = new Date();
 
   <!-- Bottom bar -->
   <div class="footer-bottom">
-    <p class="footer-copy">© {today.getFullYear()} 布克小姐・版權所有</p>
+    <p class="footer-copy">© {today.getFullYear()} {site.footerCopyright}</p>
   </div>
 </footer>
 

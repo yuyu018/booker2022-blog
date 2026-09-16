@@ -2,6 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from './PageHero.astro';
 import { categoryMeta, getPostsByCategory, monthLabel, postUrl, readTime, type Category } from '../lib/posts';
+import { blogText as t, site } from '../lib/site';
 
 interface Props {
   slug: Category;
@@ -11,18 +12,18 @@ const meta = categoryMeta[slug];
 const posts = await getPostsByCategory(slug);
 ---
 
-<PageLayout title={`${meta.title} — 布克小姐｜再富養一次`} description={meta.desc}>
+<PageLayout title={`${meta.title} — ${site.siteTitle}`} description={meta.desc}>
 
-  <PageHero label={meta.labelEn} labelZh="精選文章" titleHtml={meta.title}>
+  <PageHero label={meta.labelEn} labelZh={t.categoryLabelZh} title={meta.title}>
     {meta.desc}
   </PageHero>
 
   <section class="cat-list-section">
     <div class="section-inner">
-      <div class="cat-count">共 {posts.length} 篇文章</div>
+      <div class="cat-count">{`${t.categoryCountBefore} ${posts.length} ${t.categoryCountAfter}`}</div>
 
       {posts.length === 0 && (
-        <p class="cat-empty">這個主題的文章正在醞釀中。</p>
+        <p class="cat-empty">{t.categoryEmpty}</p>
       )}
 
       {posts.map((p, i) => (
@@ -40,10 +41,10 @@ const posts = await getPostsByCategory(slug);
       ))}
 
       <div class="cat-more">
-        <p class="cat-more-text">持續更新中，歡迎訂閱電子報，第一時間收到新文章。</p>
+        <p class="cat-more-text">{t.categoryMoreText}</p>
         <div class="cat-more-cta">
-          <a href="/#s-newsletter" class="btn-primary">訂閱電子報</a>
-          <a href="/blog" class="btn-secondary">瀏覽其他主題</a>
+          <a href="/#s-newsletter" class="btn-primary">{t.categoryMoreBtnPrimary}</a>
+          <a href="/blog" class="btn-secondary">{t.categoryMoreBtnSecondary}</a>
         </div>
       </div>
     </div>

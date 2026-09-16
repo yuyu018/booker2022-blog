@@ -2,6 +2,7 @@
 import PageLayout from '../../layouts/PageLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import { CATEGORIES, categoryMeta, getPosts, monthLabel, postUrl, readTime } from '../../lib/posts';
+import { blogText as t } from '../../lib/site';
 
 const PER_GROUP = 5;
 const posts = await getPosts();
@@ -13,10 +14,10 @@ const groups = CATEGORIES.map(slug => ({
 }));
 ---
 
-<PageLayout title="所有文章 — 布克小姐｜再富養一次" description="金錢、生活、閱讀與自我成長的所有文章總覽">
+<PageLayout title={t.seoTitle} description={t.seoDescription}>
 
-  <PageHero label="All Writings" labelZh="文章總覽" titleHtml="所有文章">
-    從金錢、生活、閱讀到自我成長，共 {posts.length} 篇文章。用文字留住思考的痕跡。
+  <PageHero label={t.heroLabelEn} labelZh={t.heroLabelZh} title={t.heroTitle}>
+    {`${t.heroDescBefore} ${posts.length} ${t.heroDescAfter}`}
   </PageHero>
 
   <section class="archive-section">
@@ -31,7 +32,7 @@ const groups = CATEGORIES.map(slug => ({
                 {g.meta.title}
               </h2>
             </div>
-            <a href={`/blog/${g.slug}`} class="archive-group-link">全部 {g.posts.length} 篇 →</a>
+            <a href={`/blog/${g.slug}`} class="archive-group-link">{`${t.groupLinkBefore} ${g.posts.length} ${t.groupLinkAfter}`}</a>
           </div>
           {g.posts.slice(0, PER_GROUP).map((p, i) => (
             <a href={postUrl(p)} class="writing-row">

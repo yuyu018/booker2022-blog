@@ -1,8 +1,12 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import { CATEGORIES, categoryMeta, getPosts, monthLabel, postUrl, readTime, type Post } from '../lib/posts';
+import { homeText as t, phrases } from '../lib/site';
 
 const posts = await getPosts();
+
+/* 數字欄填 auto 時，自動換成目前的文章總數 */
+const stats = t.stats.map(s => ({ ...s, num: s.num === 'auto' ? String(posts.length) : s.num }));
 
 /* 首頁精選：每個分類取最新一篇 */
 const featured = CATEGORIES
@@ -17,7 +21,7 @@ const pillars = CATEGORIES.map(c => ({
 }));
 ---
 
-<PageLayout title="布克小姐｜再富養一次 — 金錢・生活・閱讀・成長" description="關於金錢、富足、生活、閱讀、成長與人生，一邊生活、一邊思考，也一邊尋找答案。">
+<PageLayout title={t.seoTitle} description={t.seoDescription}>
 
   <!-- ══════════════════════════════════
        HERO：直排標題 × 印章
@@ -26,42 +30,35 @@ const pillars = CATEGORIES.map(c => ({
     <div class="hero-inner">
 
       <div class="hero-left">
-        <p class="hero-side" aria-hidden="true">金錢・生活・閱讀・成長</p>
+        <p class="hero-side" aria-hidden="true">{t.heroSide}</p>
         <div class="hero-vwrap">
           <h1 class="hero-vtitle">
-            <span class="vcol">用文字耕耘</span>
-            <span class="vcol vcol-2">生命的質地</span>
+            <span class="vcol">{t.heroTitleLine1}</span>
+            <span class="vcol vcol-2">{t.heroTitleLine2}</span>
           </h1>
           <span class="seal hero-seal" aria-hidden="true">布克</span>
         </div>
       </div>
 
       <div class="hero-right">
-        <p class="label-en">Money · Life · Reading · Growth</p>
-        <h2 class="hero-name"><span class="ph">布克小姐｜</span><span class="ph">再富養一次</span></h2>
+        <p class="label-en">{t.heroLabelEn}</p>
+        <h2 class="hero-name">{phrases(t.heroName).map(s => <span class="ph">{s}</span>)}</h2>
         <p class="hero-desc">
-          <span class="ph">我們如何度過每一天，</span><span class="ph">當然也就是我們如何度過一生。</span><br />
-          <span class="ph">關於金錢、富足、生活、</span><span class="ph">閱讀、成長與人生，</span><br />
-          <span class="ph">一邊生活、一邊思考，</span><span class="ph">也一邊尋找答案。</span><br />
-          <span class="ph">慢慢把人生過成自己喜歡的樣子。🌱</span>
+          {t.heroDescLines.map((line, i) => (
+            <>{i > 0 && <br />}{phrases(line).map(s => <span class="ph">{s}</span>)}</>
+          ))}
         </p>
         <div class="hero-cta">
-          <a href="/blog" class="btn-primary">開始閱讀</a>
-          <a href="/about" class="btn-secondary">認識作者</a>
+          <a href="/blog" class="btn-primary">{t.heroBtnPrimary}</a>
+          <a href="/about" class="btn-secondary">{t.heroBtnSecondary}</a>
         </div>
         <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-num">10+</span>
-            <span class="stat-label">年投資經驗</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">300+</span>
-            <span class="stat-label">本閱讀書目</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">{posts.length}</span>
-            <span class="stat-label">篇原創文章</span>
-          </div>
+          {stats.map(s => (
+            <div class="stat">
+              <span class="stat-num">{s.num}</span>
+              <span class="stat-label">{s.label}</span>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -74,8 +71,8 @@ const pillars = CATEGORIES.map(c => ({
   ══════════════════════════════════ -->
   <section id="s-pillars" class="pillars-section">
     <div class="section-inner">
-      <span class="label-en">Four Pillars</span>
-      <h2 class="section-title">內容支柱</h2>
+      <span class="label-en">{t.pillarsLabelEn}</span>
+      <h2 class="section-title">{t.pillarsTitle}</h2>
       <div class="pillars-grid">
         {pillars.map(p => (
           <a href={p.href} class="pillar">
@@ -97,10 +94,10 @@ const pillars = CATEGORIES.map(c => ({
     <div class="section-inner">
       <div class="writings-head">
         <div>
-          <span class="label-en">Selected Writings</span>
-          <h2 class="section-title">精選文章</h2>
+          <span class="label-en">{t.writingsLabelEn}</span>
+          <h2 class="section-title">{t.writingsTitle}</h2>
         </div>
-        <a href="/blog" class="writings-all">查看所有文章 →</a>
+        <a href="/blog" class="writings-all">{t.writingsAllLabel}</a>
       </div>
       <div class="writings-list">
         {featured.map((p, i) => (
@@ -126,12 +123,12 @@ const pillars = CATEGORIES.map(c => ({
   ══════════════════════════════════ -->
   <section id="s-quote" class="quote-band">
     <div class="quote-inner">
-      <span class="quote-label scroll-reveal" style="--delay:0s">摘　句</span>
+      <span class="quote-label scroll-reveal" style="--delay:0s">{t.quoteLabel}</span>
       <blockquote class="quote-text scroll-reveal" style="--delay:0.15s">
-        富有是天賦，快樂是人權
+        {t.quoteText}
       </blockquote>
       <p class="quote-author scroll-reveal" style="--delay:0.3s">
-        — 布克小姐 <span class="seal quote-seal" aria-hidden="true">布克</span>
+        {t.quoteAuthor} <span class="seal quote-seal" aria-hidden="true">布克</span>
       </p>
     </div>
   </section>
@@ -144,22 +141,19 @@ const pillars = CATEGORIES.map(c => ({
       <div class="about-portrait">
         <div class="portrait-paper">
           <img class="portrait-img" src="/booker-avatar.png" alt="布克小姐" width="256" height="256" decoding="async" />
-          <span class="portrait-caption">作者・布克小姐</span>
+          <span class="portrait-caption">{t.portraitCaption}</span>
         </div>
       </div>
       <div class="about-content">
-        <span class="label-en">About</span>
-        <h2 class="section-title">一個愛書、愛運動<br />也愛思考財富的人</h2>
+        <span class="label-en">{t.aboutLabelEn}</span>
+        <h2 class="section-title">{t.aboutTitleLine1}<br />{t.aboutTitleLine2}</h2>
         <p class="about-intro">
-          我相信「閱讀是最低成本的自我投資」。在金錢、生活、閱讀與自我成長之間持續探索，尋找它們共同的內核——長期主義，以及對複利思維的深刻信仰。
+          {t.aboutIntro}
         </p>
         <div class="about-tags">
-          <span class="about-tag">金錢觀念</span>
-          <span class="about-tag">生活日記</span>
-          <span class="about-tag">閱讀筆記</span>
-          <span class="about-tag">自我成長</span>
+          {t.aboutTags.map(tag => <span class="about-tag">{tag}</span>)}
         </div>
-        <a href="/about" class="btn-primary">了解更多</a>
+        <a href="/about" class="btn-primary">{t.aboutBtn}</a>
       </div>
     </div>
   </section>
@@ -169,11 +163,11 @@ const pillars = CATEGORIES.map(c => ({
   ══════════════════════════════════ -->
   <section id="s-newsletter" class="newsletter-section">
     <div class="newsletter-inner">
-      <h2 class="newsletter-title">訂閱布克小姐電子報</h2>
-      <p class="newsletter-desc">每兩週一封，精選最值得閱讀的文章與思考片段。不濫發，不喧嘩。</p>
+      <h2 class="newsletter-title">{t.newsletterTitle}</h2>
+      <p class="newsletter-desc">{t.newsletterDesc}</p>
       <form class="newsletter-form" action="#" method="post">
-        <input type="email" class="newsletter-input" placeholder="你的電子郵件地址" aria-label="電子郵件地址" required />
-        <button class="newsletter-submit btn-primary" type="submit">訂閱</button>
+        <input type="email" class="newsletter-input" placeholder={t.newsletterPlaceholder} aria-label="電子郵件地址" required />
+        <button class="newsletter-submit btn-primary" type="submit">{t.newsletterButton}</button>
       </form>
     </div>
   </section>

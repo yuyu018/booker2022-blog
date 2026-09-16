@@ -1,0 +1,51 @@
+{
+  "seoTitle": "聯絡資訊 — 布克小姐｜再富養一次",
+  "seoDescription": "與布克小姐聯絡，歡迎合作邀約、讀者交流或任何想法分享",
+  "heroLabelEn": "Get in Touch",
+  "heroLabelZh": "聯絡資訊",
+  "heroTitle": "讓我們開始",
+  "heroTitleAccent": "對話",
+  "heroDesc": "無論是合作邀約、讀者回饋，還是單純想聊聊書與投資，都歡迎寫信給我。每一封信我都會親自閱讀。",
+  "channels": [
+    {
+      "title": "電子郵件",
+      "desc": "最直接的聯絡方式，通常在 2–3 個工作天內回覆。",
+      "linkText": "hello@example.com",
+      "linkHref": "mailto:hello@example.com"
+    },
+    {
+      "title": "合作邀約",
+      "desc": "演講、課程、文章合作或品牌業配，歡迎附上相關資訊。",
+      "linkText": "collab@example.com",
+      "linkHref": "mailto:collab@example.com"
+    },
+    {
+      "title": "社群媒體",
+      "desc": "日常思考片段與閱讀紀錄，歡迎追蹤互動。",
+      "linkText": "@booker_writes",
+      "linkHref": "https://twitter.com/"
+    }
+  ],
+  "note": "若是讀者問題或文章回饋，也可以直接在文章底部留言，我同樣會看到。",
+  "formLabelEn": "Send a Message",
+  "formTitle": "傳送訊息",
+  "formAction": "https://formspree.io/f/YOUR_FORM_ID",
+  "labelName": "姓名",
+  "placeholderName": "你的名字",
+  "labelEmail": "電子郵件",
+  "placeholderEmail": "your@email.com",
+  "labelSubject": "主旨",
+  "subjectOptions": [
+    "請選擇聯絡類型",
+    "讀者回饋",
+    "合作邀約",
+    "金錢話題交流",
+    "生活話題交流",
+    "閱讀話題交流",
+    "自我成長話題交流",
+    "其他"
+  ],
+  "labelMessage": "訊息內容",
+  "placeholderMessage": "請輸入你想說的話……",
+  "submitLabel": "送出訊息"
+}

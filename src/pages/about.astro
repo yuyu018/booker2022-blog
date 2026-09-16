@@ -1,41 +1,9 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-
-const stories = [
-  {
-    num: '壹',
-    title: '從月光族開始',
-    paras: [
-      '剛開始上班的時候，我是標準的月光族。三十歲才真正開始賺錢，第一次有了自己的薪水，那種「終於可以自己決定錢要怎麼花」的感覺太強烈，一個包包就能花掉一、兩個月的薪水。',
-      '2020 年開始投資理財，讀了《致富心態》，才慢慢明白財富自由的目的不是追一個數字，而是買回自己的時間。現在我用指數型 ETF 長期投資，讓時間站在我這邊。',
-    ],
-  },
-  {
-    num: '貳',
-    title: '在身體裡找回節奏',
-    paras: [
-      '我是先天僵硬的「鋼鐵人」，卻在連續 20 週的師資班之後，拿到了瑜珈師資證照——那是我 50 個夢想清單裡的其中一個。',
-      '每週六早上的一對一重訓，加上跟著營養師調整飲食，讓我發現改變的從來不只是體態，而是整個生活型態。',
-    ],
-  },
-  {
-    num: '參',
-    title: '和自己好好對話',
-    paras: [
-      '2026 年春天，我開始和 life coach 對話，也因此養成寫日記的習慣。從一篇篇充滿怨念的流水帳，慢慢寫成能看見自己的紀錄。',
-      '我還在學日文，也常常中斷。但就像開車一樣，方向盤偏了，就導正回來。這個部落格就是我的人生實驗室：一邊生活、一邊思考，也一邊尋找答案。',
-    ],
-  },
-];
-
-const beliefs = [
-  { title: '把選擇留給未來的自己', desc: '存錢不是把錢鎖起來，而是讓人生出現不同選項時，我有能力選擇。' },
-  { title: '讓每天都有值得期待的事', desc: '一堂課、一本書、一頓好吃的飯，小小的期待都是生活在發光的證明。' },
-  { title: '一邊走，一邊修正', desc: '人生不需要一次就找到正確答案，只要願意往前走，就會慢慢知道什麼適合自己。' },
-];
+import { aboutText as t, numeral } from '../lib/site';
 ---
 
-<PageLayout title="關於我 — 布克小姐｜再富養一次" description="認識布克小姐：一個普通上班族，在金錢、生活、閱讀與自我成長之間，替自己做一場人生實驗。">
+<PageLayout title={t.seoTitle} description={t.seoDescription}>
 
   <!-- HERO -->
   <section class="about-hero">
@@ -43,23 +11,18 @@ const beliefs = [
       <div class="about-portrait">
         <div class="portrait-paper">
           <img class="portrait-img" src="/booker-avatar.png" alt="布克小姐" width="256" height="256" decoding="async" />
-          <span class="portrait-caption">作者・布克小姐</span>
+          <span class="portrait-caption">{t.portraitCaption}</span>
         </div>
         <span class="seal about-seal" aria-hidden="true">布克</span>
       </div>
       <div class="about-hero-text">
-        <span class="label-en">About the Author</span>
-        <h1 class="about-hero-title">布克小姐——<br />再富養自己一次</h1>
+        <span class="label-en">{t.heroLabelEn}</span>
+        <h1 class="about-hero-title">{t.heroTitleLine1}<br />{t.heroTitleLine2}</h1>
         <p class="about-hero-desc">
-          上班族、指數投資人、瑜珈師資，也是還在學日文的學生。相信富足不只是存款數字，而是用每一天，慢慢把人生過成自己喜歡的樣子。
+          {t.heroDesc}
         </p>
         <div class="about-tags">
-          <span class="about-tag">指數投資</span>
-          <span class="about-tag">瑜珈師資</span>
-          <span class="about-tag">一對一重訓</span>
-          <span class="about-tag">寫日記</span>
-          <span class="about-tag">學日文</span>
-          <span class="about-tag">滑雪</span>
+          {t.heroTags.map(tag => <span class="about-tag">{tag}</span>)}
         </div>
       </div>
     </div>
@@ -68,12 +31,12 @@ const beliefs = [
   <!-- STORY -->
   <section class="story-section">
     <div class="story-inner">
-      <span class="label-en">My Story</span>
-      <h2 class="section-title">三段故事</h2>
-      {stories.map(s => (
+      <span class="label-en">{t.storyLabelEn}</span>
+      <h2 class="section-title">{t.storyTitle}</h2>
+      {t.stories.map((s, i) => (
         <div class="story-block">
           <div class="story-side">
-            <span class="story-num">{s.num}</span>
+            <span class="story-num">{numeral(i)}</span>
           </div>
           <div class="story-main">
             <h3 class="story-title">{s.title}</h3>
@@ -87,10 +50,10 @@ const beliefs = [
   <!-- BELIEFS -->
   <section class="beliefs-band">
     <div class="beliefs-inner">
-      <span class="label-en">Beliefs</span>
-      <h2 class="section-title">三個信念</h2>
+      <span class="label-en">{t.beliefsLabelEn}</span>
+      <h2 class="section-title">{t.beliefsTitle}</h2>
       <div class="beliefs-grid">
-        {beliefs.map(b => (
+        {t.beliefs.map(b => (
           <div class="belief">
             <h3 class="belief-title">{b.title}</h3>
             <p class="belief-desc">{b.desc}</p>
@@ -103,11 +66,11 @@ const beliefs = [
   <!-- CTA -->
   <section class="about-cta">
     <div class="about-cta-inner">
-      <h2 class="about-cta-title">想進一步交流嗎？</h2>
-      <p class="about-cta-desc">無論是合作邀約還是讀者交流，都歡迎寫信給我。</p>
+      <h2 class="about-cta-title">{t.ctaTitle}</h2>
+      <p class="about-cta-desc">{t.ctaDesc}</p>
       <div class="about-cta-btns">
-        <a href="/contact" class="btn-primary">與我聯絡</a>
-        <a href="/blog" class="btn-secondary">閱讀文章</a>
+        <a href="/contact" class="btn-primary">{t.ctaBtnPrimary}</a>
+        <a href="/blog" class="btn-secondary">{t.ctaBtnSecondary}</a>
       </div>
     </div>
   </section>
