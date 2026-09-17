@@ -113,8 +113,11 @@
 
   /** 需要套用正規式的（含數字等變數） */
   var RULES = [
-    [/^(\d+)\s+entries?$/, '$1 篇'],
+    [/^(\d+)\s+(?:entry|entries)$/, '$1 篇'],
     [/^Showing (\d+) of (\d+)$/, '顯示 $1 / $2 筆'],
+    /* 「Pull request #1」這種帶編號的，編號要留著 */
+    [/^Pull requests?\s*#(\d+)$/, '審稿 #$1'],
+    [/^View pull requests?\s*#(\d+)$/, '查看審稿 #$1'],
   ];
 
   function translate(text) {
