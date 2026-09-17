@@ -26,6 +26,11 @@ const categoryFields = (label: string) =>
     { label },
   );
 
+/*
+ * 不使用 Keystatic 內建的 locale：它的 zh-TW 是機器翻譯
+ * （Save→「節省」、New branch→「新分行」），比英文還難懂。
+ * 改用 public/keystatic-zh.js 覆蓋成符合我們流程的用語。
+ */
 export default config({
   ui: {
     brand: { name: '布克小姐｜再富養一次' },
@@ -76,7 +81,7 @@ export default config({
         }),
         tags: fields.array(fields.text({ label: '標籤' }), {
           label: '標籤',
-          description: '可留空。每個標籤按一次「Add」新增一項',
+          description: '可留空。每個標籤按一次「新增」加一項',
           itemLabel: (props) => props.value,
         }),
         /* 圖片會放進 src/assets/fb/<文章代號>/，這是 Keystatic 的固定規則 */
