@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>布克小姐網站｜審核者手冊</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+
+  :root {
+    --ink: #3D362E;
+    --ink-soft: #6B6258;
+    --ink-faint: #9A9084;
+    --line: #E8DFD3;
+    --accent: #C98A6B;
+    --accent-deep: #B87856;
+    --soft: #F7F2EA;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { color-scheme: light; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color: var(--ink);
+    font-size: 10.5pt;
+    line-height: 1.85;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── 封面標頭 ── */
+  .cover {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 14px;
+    margin-bottom: 26px;
+  }
+  .cover .eyebrow {
+    font-size: 8pt;
+    letter-spacing: 0.35em;
+    color: var(--accent-deep);
+    margin: 0 0 6px;
+  }
+  .cover h1 {
+    font-family: "Songti TC", "Noto Serif TC", serif;
+    font-size: 21pt;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: 0.06em;
+  }
+  .cover p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 9.5pt;
+  }
+
+  h2 {
+    font-family: "Songti TC", "Noto Serif TC", serif;
+    font-size: 14pt;
+    margin: 26px 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent);
+    letter-spacing: 0.05em;
+    break-after: avoid;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  h3 {
+    font-size: 11pt;
+    margin: 16px 0 6px;
+    color: var(--accent-deep);
+    break-after: avoid;
+  }
+
+  p { margin: 0 0 9px; }
+
+  ol, ul { margin: 0 0 10px; padding-left: 1.5em; }
+  li { margin-bottom: 5px; }
+  li > ul, li > ol { margin-top: 5px; }
+
+  strong { font-weight: 600; }
+
+  code {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 9pt;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  .url {
+    display: inline-block;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 10pt;
+    color: var(--accent-deep);
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin: 4px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+    font-size: 10pt;
+    break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--soft);
+    font-weight: 600;
+    width: 24%;
+  }
+
+  blockquote {
+    margin: 10px 0;
+    padding: 9px 14px;
+    background: var(--soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    color: var(--ink-soft);
+    font-size: 9.5pt;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 9px;
+    break-inside: avoid;
+  }
+  .steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 8.5pt;
+    line-height: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .warn {
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 11px 14px;
+    margin: 12px 0;
+    background: #FDF6F1;
+    break-inside: avoid;
+  }
+  .warn .warn-title {
+    font-weight: 600;
+    color: var(--accent-deep);
+    margin-bottom: 5px;
+  }
+  .warn ol { margin-bottom: 0; }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 8.5pt;
+    color: var(--ink-faint);
+    text-align: center;
+    letter-spacing: 0.08em;
+  }
+
+  .page-break { break-before: page; }
+</style>
+
+<style>
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 0 12px; }
+  .flow-step {
+    border: 1px solid var(--line); background: var(--soft);
+    border-radius: 999px; padding: 5px 12px; font-size: 9.5pt;
+  }
+  .flow-me { border-color: var(--accent); background: #FDF6F1; color: var(--accent-deep); font-weight: 600; }
+  .flow-arrow { color: var(--ink-faint); font-size: 9pt; }
+</style>
+
+</head>
+<body>
+
+<div class="cover">
+  <p class="eyebrow">MISSBOOKER.COM</p>
+  <h1>布克小姐網站｜審核者手冊</h1>
+  <p>給網站主人。寫稿人送出的每一次修改都要經過你同意才會上線，這份手冊說明怎麼看、怎麼放行、出事怎麼查。</p>
+</div>
+
+<h2>一、整個流程長這樣</h2>
+<div class="flow">
+  <span class="flow-step">寫稿人另開草稿</span><span class="flow-arrow">→</span>
+  <span class="flow-step">編輯並儲存</span><span class="flow-arrow">→</span>
+  <span class="flow-step">送出審稿</span><span class="flow-arrow">→</span>
+  <span class="flow-step flow-me">你檢查</span><span class="flow-arrow">→</span>
+  <span class="flow-step flow-me">合併＝上線</span>
+</div>
+<p>他不管怎麼操作都碰不到正式網站——GitHub 的分支保護會擋下來。只有你（管理員）能放行。</p>
+
+<h2>二、待審稿在哪裡看</h2>
+<table>
+  <tr><th>待審清單</th><td>github.com/yuyu018/booker2022-blog/<strong>pulls</strong></td></tr>
+  <tr><th>改了什麼</th><td>點進該筆 → <strong>Files changed</strong> 分頁。綠色是新增、紅色是刪掉</td></tr>
+  <tr><th>實際畫面</th><td>該頁下方 Vercel 會留一個預覽網址，點開就是套用後的樣子</td></tr>
+  <tr><th>還沒送審的草稿</th><td>github.com/yuyu018/booker2022-blog/<strong>branches</strong>，名稱都是 <code>draft-</code> 開頭</td></tr>
+</table>
+<blockquote><p>GitHub 預設會把待審通知寄到你的信箱，不必一直開著網頁等。</p></blockquote>
+
+<h2>三、放行或退件</h2>
+<ol class="steps">
+  <li>打開該筆審稿，看 <strong>Files changed</strong> 確認內容。</li>
+  <li>要上線 → <strong>Merge pull request</strong> → <strong>Confirm merge</strong>。網站幾分鐘後自動更新。</li>
+  <li>不要 → <strong>Close pull request</strong>（退件，內容還留著，之後可再開）。</li>
+  <li>合併或退件之後，按 <strong>Delete branch</strong> 把用完的草稿清掉，清單才不會愈積愈多。</li>
+</ol>
+<div class="warn">
+  <div class="warn-title">合併前必看的兩件事</div>
+  <ol>
+    <li>內容有沒有出現真實姓名、公務單位、他人個資——這個站是公開的。</li>
+    <li>是不是動到 2026 年 9 月前從 Facebook 搬過來的舊文章。那些文章的斷行用後台編輯會跑掉，看到就先退件。</li>
+  </ol>
+</div>
+
+<h2>四、你自己要改文字</h2>
+<p>你是管理員，有兩條路，都不用經過審稿：</p>
+<table>
+  <tr><th>線上改</th><td>missbooker.com/keystatic，左上角保持在 <strong>正式版</strong>，儲存後直接上線。適合改錯字。</td></tr>
+  <tr><th>在自己電腦改</th><td>終端機執行 <code>npm run dev</code>，打開 localhost:4321/keystatic。這是本機模式，不用登入 GitHub，改完自己 <code>git push</code>。適合大幅修改。</td></tr>
+</table>
+
+<h2>五、管理協作者</h2>
+<ol class="steps">
+  <li>邀請或移除：repo → Settings → <strong>Collaborators</strong>。</li>
+  <li>權限一律給 <strong>Write</strong>。</li>
+  <li>不要給 <strong>Admin</strong>——管理員會繞過審稿保護，可以直接改正式網站。</li>
+</ol>
+
+<h2>六、設定備忘（出問題時對照）</h2>
+<table>
+  <tr><th>後台網址</th><td>missbooker.com/keystatic</td></tr>
+  <tr><th>GitHub App</th><td>missbooker editor（回呼網址 /api/keystatic/github/oauth/callback）</td></tr>
+  <tr><th>Vercel 環境變數</th><td>KEYSTATIC_GITHUB_CLIENT_ID、KEYSTATIC_GITHUB_CLIENT_SECRET、PUBLIC_KEYSTATIC_GITHUB_APP_SLUG、KEYSTATIC_SECRET</td></tr>
+  <tr><th>分支保護</th><td>ruleset <code>protect-main</code>：需經審稿才能合併，管理員例外</td></tr>
+  <tr><th>草稿命名</th><td>後台開的草稿一律是 <code>draft-</code> 開頭</td></tr>
+</table>
+
+<h2>七、疑難排解</h2>
+<table>
+  <tr><th>他說存不了檔</th><td>他多半停在「正式版」上編輯。請他左上角先按<strong>另開草稿</strong></td></tr>
+  <tr><th>後台打不開<br>或登入失敗</th><td>Vercel 的四個環境變數有沒有掉；改過變數要重新部署（Redeploy）才生效</td></tr>
+  <tr><th>合併了但網站沒變</th><td>去 Vercel → Deployments 看那筆部署是否成功；靜態頁面需要重新建置，約 1–3 分鐘</td></tr>
+  <tr><th>文章封面圖不見</th><td>圖片必須放在該篇文章專屬的資料夾。不要用檔案總管手動搬圖，一律從後台上傳</td></tr>
+  <tr><th>介面出現英文</th><td>中文化是額外覆蓋的，遇到漏網的字截圖回報即可補上</td></tr>
+</table>
+
+<h2>八、長期原則</h2>
+<ol>
+  <li>對外一律用筆名<strong>布克小姐</strong>，網站、repo、提交紀錄都不出現真名。</li>
+  <li>repo 是公開的，提交紀錄會顯示協作者的信箱。請協作者在 GitHub 開啟 <strong>Keep my email addresses private</strong>。</li>
+  <li>合併就是發布。不確定的內容先退件，寧可多問一次。</li>
+</ol>
+
+<footer>布克小姐｜再富養一次　·　missbooker.com　·　審核者手冊</footer>
+
+</body>
+</html>

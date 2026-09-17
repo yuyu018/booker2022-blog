@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>布克小姐網站｜寫稿人手冊</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+
+  :root {
+    --ink: #3D362E;
+    --ink-soft: #6B6258;
+    --ink-faint: #9A9084;
+    --line: #E8DFD3;
+    --accent: #C98A6B;
+    --accent-deep: #B87856;
+    --soft: #F7F2EA;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { color-scheme: light; }
+
+  body {
+    margin: 0;
+    background: #fff;
+    font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    color: var(--ink);
+    font-size: 10.5pt;
+    line-height: 1.85;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── 封面標頭 ── */
+  .cover {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 14px;
+    margin-bottom: 26px;
+  }
+  .cover .eyebrow {
+    font-size: 8pt;
+    letter-spacing: 0.35em;
+    color: var(--accent-deep);
+    margin: 0 0 6px;
+  }
+  .cover h1 {
+    font-family: "Songti TC", "Noto Serif TC", serif;
+    font-size: 21pt;
+    font-weight: 600;
+    margin: 0 0 8px;
+    letter-spacing: 0.06em;
+  }
+  .cover p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 9.5pt;
+  }
+
+  h2 {
+    font-family: "Songti TC", "Noto Serif TC", serif;
+    font-size: 14pt;
+    margin: 26px 0 10px;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent);
+    letter-spacing: 0.05em;
+    break-after: avoid;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  h3 {
+    font-size: 11pt;
+    margin: 16px 0 6px;
+    color: var(--accent-deep);
+    break-after: avoid;
+  }
+
+  p { margin: 0 0 9px; }
+
+  ol, ul { margin: 0 0 10px; padding-left: 1.5em; }
+  li { margin-bottom: 5px; }
+  li > ul, li > ol { margin-top: 5px; }
+
+  strong { font-weight: 600; }
+
+  code {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 9pt;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  .url {
+    display: inline-block;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 10pt;
+    color: var(--accent-deep);
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin: 4px 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 14px;
+    font-size: 10pt;
+    break-inside: avoid;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--soft);
+    font-weight: 600;
+    width: 24%;
+  }
+
+  blockquote {
+    margin: 10px 0;
+    padding: 9px 14px;
+    background: var(--soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    color: var(--ink-soft);
+    font-size: 9.5pt;
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps > li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 9px;
+    break-inside: avoid;
+  }
+  .steps > li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 8.5pt;
+    line-height: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .warn {
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 11px 14px;
+    margin: 12px 0;
+    background: #FDF6F1;
+    break-inside: avoid;
+  }
+  .warn .warn-title {
+    font-weight: 600;
+    color: var(--accent-deep);
+    margin-bottom: 5px;
+  }
+  .warn ol { margin-bottom: 0; }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 8.5pt;
+    color: var(--ink-faint);
+    text-align: center;
+    letter-spacing: 0.08em;
+  }
+
+  .page-break { break-before: page; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="eyebrow">MISSBOOKER.COM</p>
+  <h1>布克小姐網站｜寫稿人手冊</h1>
+  <p>給負責寫文章、改頁面文字的夥伴。完全不需要懂程式，也不用在自己的電腦安裝任何東西，只要有瀏覽器和一個 GitHub 帳號。</p>
+</div>
+
+<h2>一、開始之前</h2>
+<ol class="steps">
+  <li>網站主人會寄一封 GitHub 邀請信給你，點信裡的 <strong>Accept invitation</strong>（接受邀請）。</li>
+  <li>之後所有工作都在這個網址進行：<br><span class="url">https://missbooker.com/keystatic</span></li>
+  <li>第一次進入會要求你用 GitHub 帳號登入，按 <strong>用 GitHub 帳號登入</strong> 並同意即可。</li>
+</ol>
+
+<h2>二、後台長什麼樣子</h2>
+<p>左邊是選單，分成三區：</p>
+<table>
+  <tr><th>文章</th><td>所有文章。新增、修改都在這裡</td></tr>
+  <tr><th>頁面文字</th><td>首頁、關於頁、服務項目頁、聯絡資訊頁、文章列表頁的所有文字</td></tr>
+  <tr><th>全站設定</th><td>導覽列標語、頁尾、四大分類的名稱與說明</td></tr>
+</table>
+<p>每個欄位下面都有一行灰色小字，說明這段文字會出現在畫面的哪裡。</p>
+
+<div class="warn">
+  <div class="warn-title">最重要的一件事：先開分支</div>
+  <p style="margin:0">左上角如果顯示 <code>main</code>（正式版），請先按 <strong>另開草稿</strong> 建立一份自己的草稿（名字隨意，例如 <code>改首頁文字</code>）再開始編輯。直接在正式版上存檔會失敗——那是網站上線中的版本，只有網站主人能動。</p>
+</div>
+
+<h2>三、寫一篇新文章</h2>
+<ol class="steps">
+  <li>左邊點 <strong>文章</strong>，再按右上角 <strong>新增</strong>。</li>
+  <li>填寫下列欄位。</li>
+  <li>右上角按 <strong>儲存</strong>。</li>
+</ol>
+<table>
+  <tr><th>標題</th><td>文章名稱</td></tr>
+  <tr><th>網址名稱<br>（Slug）</th><td>這篇文章的網址，建議用英文或數字，例如 <code>my-first-post</code>。<strong>存檔後就不要再改</strong>，否則舊連結會失效</td></tr>
+  <tr><th>摘要</th><td>列表上顯示的簡介，大約 60–90 字</td></tr>
+  <tr><th>發布時間</th><td>決定文章的日期與排序</td></tr>
+  <tr><th>分類</th><td>金錢／生活／閱讀／自我成長，四選一</td></tr>
+  <tr><th>標籤</th><td>可留空</td></tr>
+  <tr><th>主視覺圖</th><td>文章開頭的大圖，可留空</td></tr>
+  <tr><th>內文</th><td>直接打字。上方工具列可以做標題、粗體、引用、清單、插圖</td></tr>
+</table>
+
+<h2>四、修改頁面文字</h2>
+<ol class="steps">
+  <li>左邊 <strong>頁面文字</strong>，選一個頁面。</li>
+  <li>改完按 <strong>儲存</strong>。</li>
+</ol>
+<p>常用的對應：</p>
+<table>
+  <tr><th>首頁</th><td>首頁大標、按鈕文字、三個數字、摘句、電子報區塊</td></tr>
+  <tr><th>關於頁</th><td>自我介紹、三段故事、三個信念</td></tr>
+  <tr><th>服務項目頁</th><td>四種合作方式與說明</td></tr>
+  <tr><th>聯絡資訊頁</th><td>電子郵件、社群連結、聯絡表單的所有文字</td></tr>
+  <tr><th>網站共用文字</th><td>導覽列標語、選單名稱、頁尾</td></tr>
+</table>
+<blockquote>
+  <p>首頁的「三個數字」中，數字欄位填 <code>auto</code> 會自動顯示目前的文章總數，不用手動維護。</p>
+</blockquote>
+
+<h2>五、存檔之後會發生什麼事</h2>
+<p><strong>按下「儲存」不會馬上更新網站。</strong></p>
+<p>你的修改會存成一份「待審稿」送給網站主人，她確認後才會正式上線（通常幾分鐘內就會看到）。</p>
+<p>畫面上如果出現 <strong>送出審稿</strong> 的按鈕，按下去就對了。</p>
+
+<h2>六、注意事項</h2>
+<ol>
+  <li><strong>舊文章（2026 年 9 月以前從 Facebook 搬過來的）盡量不要用後台改。</strong>那些文章保留了原本 Facebook 的短句斷行，用後台編輯器打開再存檔，斷行方式可能會跑掉。真的要改，請先告訴網站主人。</li>
+  <li><strong>網址名稱（Slug）存檔後不要改</strong>，已經被分享出去的文章連結會失效。</li>
+  <li><strong>不要刪除文章</strong>，需要下架請先跟網站主人說。</li>
+  <li>文字裡不要出現網站主人的本名，一律使用筆名<strong>「布克小姐」</strong>。</li>
+  <li>存檔失敗、畫面卡住 → 重新整理頁面再試一次；還是不行就截圖給網站主人。</li>
+</ol>
+
+<footer>布克小姐｜再富養一次　·　missbooker.com　·　寫稿人手冊</footer>
+
+</body>
+</html>
