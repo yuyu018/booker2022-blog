@@ -22,7 +22,9 @@ export const categoryMeta = Object.fromEntries(
 }>;
 
 export async function getPosts(): Promise<Post[]> {
-  return (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return (await getCollection('blog'))
+    .filter((p) => !p.data.draft)   /* 下架的文章不出現在任何列表 */
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
 export async function getPostsByCategory(category: Category): Promise<Post[]> {

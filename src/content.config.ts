@@ -16,6 +16,8 @@ const blog = defineCollection({
 			heroImage: z.optional(image()),
 			category: z.enum(['money', 'life', 'reading', 'growth']).optional(),
 			tags: z.array(z.string()).optional(),
+			/* 下架：不在網站任何地方顯示，檔案仍保留 */
+			draft: z.boolean().optional().default(false),
 		}),
 });
 

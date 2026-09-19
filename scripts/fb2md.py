@@ -44,6 +44,10 @@ raw = fix(json.loads((EXPORT / 'your_facebook_activity/posts/your_posts__check_i
 CATEGORY_FILE = pathlib.Path(__file__).with_name('fb-categories.json')
 CATEGORY_BY_SLUG = json.loads(CATEGORY_FILE.read_text(encoding='utf-8')) if CATEGORY_FILE.exists() else {}
 
+# 已下架的文章：檔案照樣產生，但加上 draft: true，網站不會顯示
+UNPUB_FILE = pathlib.Path(__file__).with_name('fb-unpublished.json')
+UNPUBLISHED = set(json.loads(UNPUB_FILE.read_text(encoding='utf-8'))) if UNPUB_FILE.exists() else set()
+
 PREFIX_CATEGORY = {
     '金錢觀念': 'money', '金錢觀': 'money', '夫妻的金錢觀': 'money', '負債': 'money',
     '閱讀筆記': 'reading', '《名人書房》特別篇': 'reading', '名人書房': 'reading',
@@ -267,6 +271,8 @@ for x in selected:
     ]
     if img_names:
         fm.append(f"heroImage: '../../../assets/fb/{img_names[0]}'")
+    if x['slug'] in UNPUBLISHED:
+        fm.append('draft: true')
     fm.append('---')
     extra = ''.join(f"\n\n![](../../../assets/fb/{n})" for n in img_names[1:])
     (OUT_MD / f"{x['slug']}.md").write_text('\n'.join(fm) + '\n\n' + x['body'] + extra + '\n')

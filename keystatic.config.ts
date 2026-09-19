@@ -84,6 +84,11 @@ export default config({
           description: '可留空。每個標籤按一次「新增」加一項',
           itemLabel: (props) => props.value,
         }),
+        draft: fields.checkbox({
+          label: '下架',
+          description: '打勾後這篇文章就不會出現在網站上（文章不會被刪除，隨時可以取消打勾放回去）',
+          defaultValue: false,
+        }),
         /* 圖片會放進 src/assets/fb/<文章代號>/，這是 Keystatic 的固定規則 */
         heroImage: fields.image({
           label: '主視覺圖',
