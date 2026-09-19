@@ -40,42 +40,27 @@ def fix(o):
 
 raw = fix(json.loads((EXPORT / 'your_facebook_activity/posts/your_posts__check_ins__photos_and_videos_1.json').read_text()))
 
-# 人工判讀後的分類（依文章主旨，不依作者 hashtag）。新文章不在表內時才用下方關鍵字規則。
-CATEGORY_BY_SLUG = {
-    # 金錢
-    '2025-11-17-2125': 'money', '2025-11-27-1227': 'money', '2026-08-24-2103': 'money',
-    '2026-09-04-1741': 'money', '2026-09-06-1454': 'money', '2026-09-06-1539': 'money',
-    '2026-09-06-1546': 'money', '2026-09-06-1615': 'money', '2026-09-06-2221': 'money',
-    '2026-09-07-1503': 'money', '2026-09-07-1541': 'money', '2026-09-07-1631': 'money',
-    '2026-09-08-1155': 'money', '2026-09-08-1205': 'money', '2026-09-08-1733': 'money',
-    '2026-09-08-1737': 'money', '2026-09-09-2038': 'money', '2026-09-09-2046': 'money',
-    '2026-09-09-2058': 'money',
-    # 生活
-    '2025-10-28-1524': 'life', '2025-11-15-1307': 'life', '2025-11-27-1106': 'life',
-    '2025-12-12-1717': 'life', '2025-12-13-1032': 'life', '2026-01-17-2119': 'life',
-    '2026-01-18-0918': 'life', '2026-01-18-1416': 'life', '2026-03-21-1142': 'life',
-    '2026-08-18-2224': 'life', '2026-08-22-2349': 'life', '2026-08-29-2306': 'life',
-    '2026-08-31-2029': 'life', '2026-09-01-2222': 'life', '2026-09-02-1257': 'life',
-    '2026-09-03-2059': 'life', '2026-09-06-2042': 'life', '2026-09-07-1525': 'life',
-    '2026-09-08-1226': 'life', '2026-09-08-1310': 'life', '2026-09-09-2055': 'life',
-    # 閱讀
-    '2026-08-30-2129': 'reading', '2026-09-06-1603': 'reading', '2026-09-06-1629': 'reading',
-    '2026-09-06-2241': 'reading',
-    # 自我成長
-    '2025-11-17-1940': 'growth', '2025-11-25-1637': 'growth', '2025-11-26-0958': 'growth',
-    '2025-12-28-1616': 'growth', '2026-08-23-2249': 'growth', '2026-08-25-2130': 'growth',
-    '2026-08-26-1923': 'growth', '2026-08-27-2129': 'growth', '2026-09-05-1602': 'growth',
-    '2026-09-08-1048': 'growth',
-}
+# 人工判讀後的分類（依文章主旨，不依作者 hashtag）；新文章不在表內時才用下方規則。
+CATEGORY_FILE = pathlib.Path(__file__).with_name('fb-categories.json')
+CATEGORY_BY_SLUG = json.loads(CATEGORY_FILE.read_text(encoding='utf-8')) if CATEGORY_FILE.exists() else {}
+
 PREFIX_CATEGORY = {
     '金錢觀念': 'money', '金錢觀': 'money', '夫妻的金錢觀': 'money', '負債': 'money',
-    '閱讀筆記': 'reading',
+    '閱讀筆記': 'reading', '《名人書房》特別篇': 'reading', '名人書房': 'reading',
     '生活日記': 'life',
 }
-CATEGORY_RULES = [
-    ('reading', ['閱讀筆記', '讀完《', '看完《', '書裡']),
-    ('growth', ['lifecoach', 'life coach', '自我成長', '人生課題', '邊界', '覺察']),
-    ('money', ['金錢', '投資', '財務', '財富', '存錢', '負債', '月光', '理財', '致富', '消費', '收入']),
+# 加權計分：(分類, 關鍵字, 權重)。權重 3 以上視為強訊號。
+CATEGORY_WEIGHTS = [
+    ('reading', ['作者｜', '這本書', '書中提到', '書裡', '讀完這本', '看完這本', '閱讀筆記'], 4),
+    ('reading', ['《', '書單', '讀書會', '翻開', '畫線'], 1),
+    ('money', ['ETF', '指數型', '存股', '複利', '財務自由', '財富自由', '資產配置', '退休金'], 4),
+    ('money', ['投資', '理財', '金錢', '財富', '存錢', '負債', '月光族', '致富', '記帳', '保險',
+               '薪水', '收入', '消費', '股票', '基金', '定期定額', '通膨', '花錢'], 2),
+    ('growth', ['life coach', 'lifecoach', '教練', '自我成長', '覺察', '人生課題', '課題',
+                '練習', '習慣', '目標', '夢想清單', '寫日記', '學日文', '瑜珈師資', '舒適圈'], 2),
+    ('growth', ['情緒', '焦慮', '恐懼', '自律', '成長', '改變自己'], 1),
+    ('life', ['老公', '史朗', '家人', '旅行', '吃飯', '節日', '過年', '中秋', '重訓', '瑜珈',
+              '上班', '同事', '假日', '天氣', '睡'], 1),
 ]
 
 TITLE_PIPE = re.compile(r'^#?\s*(.{1,20}?)｜(.+)$')
@@ -88,6 +73,8 @@ def entry_text(p):
     if not t.strip():
         t = next((m['media'].get('description', '') for a in p.get('attachments', [])
                   for m in a.get('data', []) if 'media' in m and m['media'].get('description', '').strip()), '')
+    # FB 標記語法 @[帳號ID:2048:顯示名稱] 會把別人的帳號 ID 寫進內文，只留顯示名稱
+    t = re.sub(r'@\[\d+:\d+:([^\]]+)\]', r'\1', t)
     return t.replace('\r\n', '\n')
 
 
@@ -137,6 +124,13 @@ def split_title(lines):
     return (short[:28] + ('…' if len(short) > 28 else '')), lines[first_i:]
 
 
+def clean_title(t):
+    """【#日更真的很難嗎?】→ 日更真的很難嗎?"""
+    t = re.sub(r'@\[\d+:\d+:([^\]]+)\]', r'\1', t.strip())
+    t = re.sub(r'^[【［\[]\s*#?\s*(.+?)\s*[】］\]]$', r'\1', t)
+    return re.sub(r'^#\s*', '', t).strip()
+
+
 def strip_trailing_tags(lines):
     tags = []
     while lines and (not lines[-1].strip() or HASHTAG_LINE.match(lines[-1].strip())):
@@ -174,16 +168,25 @@ def plain_excerpt(md, n=90):
 
 
 def classify(slug, title, body):
+    """回傳 (分類, 信心)。信心 'manual' > 'prefix' > 'strong' > 'weak'。"""
     if slug in CATEGORY_BY_SLUG:
-        return CATEGORY_BY_SLUG[slug]
+        return CATEGORY_BY_SLUG[slug], 'manual'
     prefix = title.split('｜')[0] if '｜' in title else ''
     if prefix in PREFIX_CATEGORY:
-        return PREFIX_CATEGORY[prefix]
-    for hay in (title, body[:400]):
-        for cat, kws in CATEGORY_RULES:
-            if any(k in hay for k in kws):
-                return cat
-    return 'life'
+        return PREFIX_CATEGORY[prefix], 'prefix'
+
+    score = {'money': 0, 'life': 0, 'reading': 0, 'growth': 0}
+    hay = title * 2 + '\n' + body[:800]   # 標題權重加倍
+    for cat, kws, w in CATEGORY_WEIGHTS:
+        for k in kws:
+            if k in hay:
+                score[cat] += w
+    best = max(score, key=lambda c: score[c])
+    if score[best] == 0:
+        return 'life', 'weak'
+    ranked = sorted(score.values(), reverse=True)
+    conf = 'strong' if score[best] >= 4 and score[best] >= ranked[1] * 2 else 'weak'
+    return best, conf
 
 
 # ── 第一輪：整理條目 ──
@@ -217,17 +220,25 @@ plan, used_slugs = [], set()
 for e in entries:
     lines = e['txt'].split('\n')
     title, body_lines = split_title(lines)
+    title = clean_title(title)
     body_lines, tags = strip_trailing_tags(body_lines)
     body = to_markdown(body_lines, args.collapse)
     slug = e['when'].strftime('%Y-%m-%d-%H%M')
     while slug in used_slugs:
         slug += 'b'
     used_slugs.add(slug)
+    cat, conf = classify(slug, title, e['txt'])
     plan.append({
         'slug': slug, 'title': title, 'date': e['when'], 'tags': tags,
-        'category': classify(slug, title, e['txt']), 'body': body,
+        'category': cat, 'conf': conf, 'body': body,
         'desc': plain_excerpt(body), 'imgs': e['imgs'], 'chars': len(e['txt']),
     })
+
+# 標題吃掉全部內容的貼文（只有一行字＋連結），正文會是空的，不收
+empty = [x for x in plan if len(re.sub(r'[\s\\]+', '', re.sub(r'<[^>]+>|!\[[^\]]*\]\([^)]*\)', '', x['body']))) < 15]
+for x in empty:
+    skipped.append((x['date'], x['title'][:40], '標題以外沒有內文'))
+plan = [x for x in plan if x not in empty]
 
 selected = [x for x in plan if not ONLY or any(o in x['title'] for o in ONLY)]
 
@@ -262,15 +273,16 @@ for x in selected:
 
 # ── 報告 ──
 cat_zh = {'money': '金錢', 'life': '生活', 'reading': '閱讀', 'growth': '成長'}
-unmapped = [x for x in plan if x['slug'] not in CATEGORY_BY_SLUG]
+weak = [x for x in plan if x['conf'] == 'weak']
 print(f"原始條目 {len(raw)}｜略過 {len(skipped)}｜重複 {dups}｜可匯入 {len(plan)}｜本次輸出 {len(selected)}")
 print('分類統計：', {cat_zh[k]: sum(1 for x in plan if x['category'] == k) for k in cat_zh})
-if unmapped:
-    print(f'⚠️ {len(unmapped)} 篇不在人工分類表內，改用關鍵字規則：', [x['slug'] for x in unmapped])
+print('分類來源：', {c: sum(1 for x in plan if x['conf'] == c) for c in ('manual', 'prefix', 'strong', 'weak')})
+if weak:
+    print(f'⚠️ {len(weak)} 篇分類訊號薄弱，建議人工覆核（寫進 scripts/fb-categories.json）')
 print('\n── 可匯入文章 ──')
 for x in plan:
     mark = '★' if x in selected else ' '
-    print(f"{mark} {x['date']:%Y-%m-%d} [{cat_zh[x['category']]}] {len(x['imgs'])}圖 {x['chars']:>5}字 /blog/fb/{x['slug']}  {x['title']}")
+    print(f"{mark} {x['date']:%Y-%m-%d} [{cat_zh[x['category']]}{'?' if x['conf'] == 'weak' else ''}] {len(x['imgs'])}圖 {x['chars']:>5}字 /blog/fb/{x['slug']}  {x['title']}")
 print('\n── 略過 ──')
 for when, lbl, why in sorted(skipped):
     print(f"  {when:%Y-%m-%d} {why}：{lbl}")
