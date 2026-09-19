@@ -2,10 +2,10 @@
   "seoTitle": "布克小姐｜再富養一次 — 金錢・生活・閱讀・成長",
   "seoDescription": "關於金錢、富足、生活、閱讀、成長與人生，一邊生活、一邊思考，也一邊尋找答案。",
   "heroSide": "金錢・生活・閱讀・成長",
-  "heroTitleLine1": "用文字耕耘",
-  "heroTitleLine2": "生命的地質",
+  "heroTitleLine1": "用金錢累積底氣",
+  "heroTitleLine2": "用選擇富養人生",
   "heroLabelEn": "Money · Life · Reading · Growth",
-  "heroName": "布克小姐｜再富養一次",
+  "heroName": "布克小姐｜再富養自己一次",
   "heroDescLines": [
     "我們如何度過每一天，當然也就是我們如何度過一生。",
     "關於金錢、富足、生活、閱讀、成長與人生，",
@@ -16,16 +16,16 @@
   "heroBtnSecondary": "認識作者",
   "stats": [
     {
-      "num": "10+",
-      "label": "年投資經驗"
+      "num": "財富",
+      "label": "人生的底氣"
     },
     {
-      "num": "300+",
-      "label": "本閱讀書目"
+      "num": "閱讀",
+      "label": "思想的養分"
     },
     {
-      "num": "auto",
-      "label": "篇原創文章"
+      "num": "自由",
+      "label": "選擇的權利"
     }
   ],
   "pillarsLabelEn": "Four Pillars",
@@ -50,6 +50,6 @@
   "portraitCaption": "作者・布克小姐",
   "newsletterTitle": "訂閱布克小姐電子報",
   "newsletterDesc": "每兩週一封，精選最值得閱讀的文章與思考片段。不濫發，不喧嘩。",
-  "newsletterPlaceholder": "你的電子郵件地址",
+  "newsletterPlaceholder": "iambooker2022@gmail.com",
   "newsletterButton": "訂閱"
 }
