@@ -327,6 +327,12 @@ export default config({
         groupLinkBefore: fields.text({ label: '各分類連結｜數字前面', description: '例如「全部」' }),
         groupLinkAfter: fields.text({ label: '各分類連結｜數字後面', description: '例如「篇 →」' }),
 
+        searchLabel: fields.text({ label: '搜尋｜欄位標題' }),
+        searchPlaceholder: fields.text({ label: '搜尋｜輸入框提示文字' }),
+        searchClear: fields.text({ label: '搜尋｜清除按鈕說明' }),
+        pagerPrev: fields.text({ label: '分頁｜上一頁' }),
+        pagerNext: fields.text({ label: '分頁｜下一頁' }),
+
         categoryLabelZh: fields.text({ label: '分類頁｜中文小標' }),
         categoryCountBefore: fields.text({ label: '分類頁｜篇數前面', description: '例如「共」' }),
         categoryCountAfter: fields.text({ label: '分類頁｜篇數後面', description: '例如「篇文章」' }),

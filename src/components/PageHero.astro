@@ -19,12 +19,12 @@ const { label, labelZh, title, titleAccent } = Astro.props;
 
 <style>
   .page-hero {
-    padding: 5rem 2rem 3.5rem;
+    padding: calc(var(--space-section) * 0.75) 2rem calc(var(--space-section) * 0.5);
     border-bottom: 1px solid var(--hairline);
     background: var(--paper);
   }
   .page-hero-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
   }
   .page-hero-zh {

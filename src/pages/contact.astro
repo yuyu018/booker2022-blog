@@ -70,9 +70,9 @@ import { contactText as t, numeral } from '../lib/site';
 </PageLayout>
 
 <style>
-  .contact-section { padding: 3.5rem 2rem 5rem; }
+  .contact-section { padding: calc(var(--space-section) * 0.6) 2rem var(--space-section); }
   .contact-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1.25fr;

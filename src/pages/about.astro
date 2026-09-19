@@ -80,11 +80,11 @@ import { aboutText as t, numeral } from '../lib/site';
 <style>
   /* ── HERO ── */
   .about-hero {
-    padding: 5rem 2rem 4rem;
+    padding: calc(var(--space-section) * 0.75) 2rem var(--space-section);
     border-bottom: 1px solid var(--hairline);
   }
   .about-hero-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 270px 1fr;
@@ -93,33 +93,25 @@ import { aboutText as t, numeral } from '../lib/site';
   }
   .about-portrait { position: relative; }
   .portrait-paper {
-    aspect-ratio: 3 / 4;
-    border: 1px solid var(--hairline-strong);
-    background: var(--paper-blush);
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.6rem;
-    padding: 1.5rem;
-    position: relative;
-  }
-  .portrait-paper::before {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 1px solid var(--hairline);
-    pointer-events: none;
+    gap: 1.4rem;
+    padding: 2.4rem 1.5rem 1.8rem;
   }
   .portrait-img {
-    width: 74%;
+    width: 66%;
     height: auto;
     display: block;
   }
   .portrait-caption {
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    letter-spacing: 0.3em;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.26em;
   }
   .about-seal {
     position: absolute;
@@ -128,7 +120,7 @@ import { aboutText as t, numeral } from '../lib/site';
     font-size: 0.92rem;
   }
   .about-hero-title {
-    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
     letter-spacing: 0.1em;
     line-height: 1.6;
     margin: 0.4rem 0 1.2rem;
@@ -145,16 +137,16 @@ import { aboutText as t, numeral } from '../lib/site';
   }
   .about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
   .about-tag {
-    font-size: 0.74rem;
-    padding: 0.32rem 0.9rem;
-    border: 1px solid var(--hairline-strong);
+    font-size: 0.76rem;
+    padding: 0.36rem 1rem;
+    background: var(--bg-soft);
     color: var(--ink-soft);
-    letter-spacing: 0.14em;
-    border-radius: 2px;
+    letter-spacing: 0.1em;
+    border-radius: 999px;
   }
 
   /* ── STORY ── */
-  .story-section { padding: 4.5rem 2rem; }
+  .story-section { padding: var(--space-section) 2rem; }
   .story-inner { max-width: 820px; margin: 0 auto; }
   .story-block {
     display: grid;
@@ -190,29 +182,21 @@ import { aboutText as t, numeral } from '../lib/site';
 
   /* ── BELIEFS ── */
   .beliefs-band {
-    padding: 4.5rem 2rem;
-    background:
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 9px,
-        rgba(90, 72, 50, 0.035) 9px,
-        rgba(90, 72, 50, 0.035) 10px
-      ),
-      var(--paper-warm);
-    border-top: 1px solid var(--hairline);
-    border-bottom: 1px solid var(--hairline);
+    padding: var(--space-section) 2rem;
+    background: var(--bg-soft);
   }
-  .beliefs-inner { max-width: 1060px; margin: 0 auto; }
+  .beliefs-inner { max-width: var(--wide-width); margin: 0 auto; }
   .beliefs-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
+    gap: 1.6rem;
     margin-top: 2rem;
   }
   .belief {
-    border-top: 1px solid var(--hairline-strong);
-    padding-top: 1.3rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 1.75rem;
   }
   .belief-title {
     font-size: 1.02rem;
@@ -228,7 +212,7 @@ import { aboutText as t, numeral } from '../lib/site';
   }
 
   /* ── CTA ── */
-  .about-cta { padding: 5rem 2rem; text-align: center; }
+  .about-cta { padding: var(--space-section) 2rem; text-align: center; }
   .about-cta-inner { max-width: 520px; margin: 0 auto; }
   .about-cta-title { font-size: 1.35rem; letter-spacing: 0.12em; margin: 0 0 0.8rem; }
   .about-cta-desc {

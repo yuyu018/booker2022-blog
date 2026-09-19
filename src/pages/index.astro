@@ -29,20 +29,13 @@ const pillars = CATEGORIES.map(c => ({
   <section id="s-hero" class="hero">
     <div class="hero-inner">
 
-      <div class="hero-left">
-        <p class="hero-side" aria-hidden="true">{t.heroSide}</p>
-        <div class="hero-vwrap">
-          <h1 class="hero-vtitle">
-            <span class="vcol">{t.heroTitleLine1}</span>
-            <span class="vcol vcol-2">{t.heroTitleLine2}</span>
-          </h1>
-          <span class="seal hero-seal" aria-hidden="true">布克</span>
-        </div>
-      </div>
-
-      <div class="hero-right">
-        <p class="label-en">{t.heroLabelEn}</p>
-        <h2 class="hero-name">{phrases(t.heroName).map(s => <span class="ph">{s}</span>)}</h2>
+      <div class="hero-text">
+        <p class="label-en hero-eyebrow">{t.heroLabelEn}</p>
+        <h1 class="hero-title">
+          <span class="hero-line">{t.heroTitleLine1}</span>
+          <span class="hero-line hero-line-accent">{t.heroTitleLine2}</span>
+        </h1>
+        <p class="hero-name">{phrases(t.heroName).map(s => <span class="ph">{s}</span>)}</p>
         <p class="hero-desc">
           {t.heroDescLines.map((line, i) => (
             <>{i > 0 && <br />}{phrases(line).map(s => <span class="ph">{s}</span>)}</>
@@ -62,8 +55,12 @@ const pillars = CATEGORIES.map(c => ({
         </div>
       </div>
 
+      <figure class="hero-portrait">
+        <img class="hero-avatar" src="/booker-avatar.png" alt="布克小姐" width="256" height="256" decoding="async" />
+        <figcaption class="hero-caption">{t.heroSide}</figcaption>
+      </figure>
+
     </div>
-    <div class="hero-texture" aria-hidden="true"></div>
   </section>
 
   <!-- ══════════════════════════════════
@@ -178,168 +175,145 @@ const pillars = CATEGORIES.map(c => ({
   /* ── HERO ── */
   .hero {
     position: relative;
-    border-bottom: 1px solid var(--hairline);
-    overflow: hidden;
   }
   .hero-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
-    padding: 4.5rem 2rem 4rem;
+    padding: var(--space-section) 2rem;
     display: grid;
-    grid-template-columns: minmax(300px, 1fr) 1.2fr;
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 4rem;
     align-items: center;
   }
 
-  /* 左：直排標題 */
-  .hero-left {
-    display: flex;
-    gap: 2.2rem;
-    align-items: flex-start;
-    justify-content: center;
-  }
-  .hero-side {
-    writing-mode: vertical-rl;
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    letter-spacing: 0.55em;
-    margin: 0.4rem 0 0;
-    padding-top: 0.2rem;
-    border-right: 1px solid var(--hairline);
-    padding-right: 1.1rem;
-    height: 220px;
-  }
-  .hero-vwrap {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1.2rem;
-  }
-  .hero-vtitle {
-    writing-mode: vertical-rl;
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(2.4rem, 4.6vw, 3.3rem);
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: 0.22em;
-    line-height: 1.5;
-    margin: 0;
-  }
-  .vcol { display: block; white-space: nowrap; }
-  .vcol-2 { margin-top: 2.6rem; margin-right: 0.9rem; color: var(--brown-deep); }
-  .hero-seal { font-size: 1.05rem; }
+  .hero-eyebrow { margin-bottom: 1.2rem; }
 
-  /* 右：資訊區 */
-  .hero-name {
-    font-family: 'Noto Serif TC', serif;
-    font-size: clamp(1.5rem, 2.8vw, 2rem);
+  /* 標題最大 2rem——份量靠留白，不靠字大 */
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3.4vw, 2rem);
     font-weight: 600;
-    letter-spacing: 0.14em;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
     color: var(--ink);
-    margin: 0 0 1.2rem;
+    margin: 0 0 1.4rem;
+  }
+  .hero-line { display: block; }
+  .hero-line-accent { color: var(--accent-deep); }
+
+  .hero-name {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing: 0.16em;
+    margin: 0 0 1.6rem;
   }
   .hero-desc {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 0.98rem;
-    color: var(--ink-muted);
-    font-weight: 300;
-    line-height: 2.15;
-    letter-spacing: 0.06em;
-    margin: 0 0 2rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 2.1;
+    letter-spacing: 0.04em;
+    margin: 0 0 2.4rem;
+    max-width: 34em;
   }
-  .hero-cta { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 2.6rem; }
+  .hero-cta { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: 3rem; }
 
   .hero-stats {
     display: flex;
-    gap: 0;
+    flex-wrap: wrap;
+    gap: 2.6rem;
   }
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    padding: 0 2.2rem;
-    border-left: 1px solid var(--hairline);
-  }
-  .stat:first-child { padding-left: 0; border-left: none; }
+  .stat { display: flex; flex-direction: column; gap: 0.3rem; }
   .stat-num {
-    font-family: 'Lora', 'Noto Serif TC', serif;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--ink);
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent-deep);
     line-height: 1.2;
   }
   .stat-label {
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    letter-spacing: 0.14em;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
   }
 
-  /* 右緣直紋 */
-  .hero-texture {
-    position: absolute;
-    top: 0; right: 0; bottom: 0;
-    width: 90px;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent 0px,
-      transparent 7px,
-      rgba(90, 72, 50, 0.05) 7px,
-      rgba(90, 72, 50, 0.05) 8px
-    );
-    pointer-events: none;
+  /* 右：頭像卡 */
+  .hero-portrait {
+    margin: 0;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 2rem 1.5rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .hero-avatar { width: 140px; height: auto; display: block; }
+  .hero-caption {
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.22em;
+    text-align: center;
   }
 
   /* ── 內容支柱 ── */
   .pillars-section {
-    padding: 4.5rem 2rem;
-    border-bottom: 1px solid var(--hairline);
+    padding: var(--space-section) 2rem;
+    background: var(--bg-soft);
   }
   .pillars-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2.4rem;
-    margin-top: 2.2rem;
+    gap: 1.6rem;
+    margin-top: 2.6rem;
   }
   @media (max-width: 1080px) {
-    .pillars-grid { grid-template-columns: repeat(2, 1fr); gap: 2.4rem 3rem; }
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
   }
   .pillar {
-    border-top: 1px solid var(--hairline-strong);
-    padding-top: 1.4rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 1.75rem;
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.3s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .pillar:hover { border-top-color: var(--seal-red); }
+  .pillar:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
   .pillar-head {
     display: flex;
     align-items: baseline;
-    gap: 0.9rem;
-    margin-bottom: 0.7rem;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
   }
   .pillar-num {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 2rem;
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
     font-weight: 600;
-    color: var(--brown);
+    color: var(--accent);
     line-height: 1;
   }
   .pillar-title {
     font-size: 1.05rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     margin: 0;
   }
   .pillar-desc {
-    font-size: 0.83rem;
-    color: var(--ink-muted);
-    line-height: 2;
-    letter-spacing: 0.04em;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.95;
+    letter-spacing: 0.03em;
     margin: 0;
   }
 
   /* ── 精選文章 ── */
   .writings-section {
-    padding: 4.5rem 2rem;
+    padding: var(--space-section) 2rem;
   }
   .writings-head {
     display: flex;
@@ -362,19 +336,9 @@ const pillars = CATEGORIES.map(c => ({
 
   /* ── 摘句 ── */
   .quote-band {
-    padding: 4.5rem 2rem;
+    padding: var(--space-section) 2rem;
     text-align: center;
-    background:
-      repeating-linear-gradient(
-        0deg,
-        transparent 0px,
-        transparent 9px,
-        rgba(90, 72, 50, 0.035) 9px,
-        rgba(90, 72, 50, 0.035) 10px
-      ),
-      var(--paper-warm);
-    border-top: 1px solid var(--hairline);
-    border-bottom: 1px solid var(--hairline);
+    background: var(--bg-soft);
   }
   .quote-inner { max-width: 720px; margin: 0 auto; }
   .quote-label {
@@ -409,11 +373,10 @@ const pillars = CATEGORIES.map(c => ({
 
   /* ── ABOUT ── */
   .about-section {
-    padding: 5rem 2rem;
-    border-bottom: 1px solid var(--hairline);
+    padding: var(--space-section) 2rem;
   }
   .about-inner {
-    max-width: 1060px;
+    max-width: var(--wide-width);
     margin: 0 auto;
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -421,65 +384,59 @@ const pillars = CATEGORIES.map(c => ({
     align-items: center;
   }
   .portrait-paper {
-    aspect-ratio: 3 / 4;
-    border: 1px solid var(--hairline-strong);
-    background: var(--paper-blush);
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1.6rem;
-    padding: 1.5rem;
-    position: relative;
-  }
-  .portrait-paper::before {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 1px solid var(--hairline);
-    pointer-events: none;
+    gap: 1.4rem;
+    padding: 2.4rem 1.5rem 1.8rem;
   }
   .portrait-img {
-    width: 74%;
+    width: 66%;
     height: auto;
     display: block;
   }
   .portrait-caption {
-    font-size: 0.72rem;
-    color: var(--ink-muted);
-    letter-spacing: 0.3em;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.26em;
   }
   .about-intro {
-    font-family: 'Noto Serif TC', serif;
     font-size: 0.95rem;
-    color: var(--ink-muted);
-    font-weight: 300;
-    line-height: 2.2;
-    letter-spacing: 0.05em;
-    margin: 0.6rem 0 1.6rem;
-    max-width: 520px;
+    color: var(--ink-soft);
+    line-height: 2.1;
+    letter-spacing: 0.03em;
+    margin: 0.6rem 0 1.8rem;
+    max-width: 34em;
   }
   .about-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.6rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
   }
   .about-tag {
-    font-size: 0.74rem;
-    padding: 0.32rem 0.9rem;
-    border: 1px solid var(--hairline-strong);
+    font-size: 0.76rem;
+    padding: 0.36rem 1rem;
+    background: var(--bg-soft);
     color: var(--ink-soft);
-    letter-spacing: 0.14em;
-    border-radius: 2px;
+    letter-spacing: 0.1em;
+    border-radius: 999px;
   }
 
   /* ── NEWSLETTER ── */
-  .newsletter-section { padding: 5rem 2rem 5.5rem; }
+  .newsletter-section { padding: 0 2rem var(--space-section); }
   .newsletter-inner {
-    max-width: 560px;
+    max-width: 620px;
     margin: 0 auto;
     text-align: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 3rem 2.5rem;
   }
   .newsletter-title {
     font-size: clamp(1.25rem, 2.4vw, 1.6rem);
@@ -536,42 +493,43 @@ const pillars = CATEGORIES.map(c => ({
     }
   }
 
-  /* ── 直排標題逐字進場 ── */
-  :global(.hero-char) {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: heroCharIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc(var(--ci) * 0.06s + 0.15s);
+  /* ── 進場：安靜的淡入上移 ── */
+  .hero-text > *,
+  .hero-portrait {
+    animation: heroIn 0.5s ease-out both;
   }
-  @keyframes heroCharIn {
-    to { opacity: 1; transform: translateY(0); }
+  .hero-text > *:nth-child(2) { animation-delay: 0.06s; }
+  .hero-text > *:nth-child(3) { animation-delay: 0.12s; }
+  .hero-text > *:nth-child(4) { animation-delay: 0.18s; }
+  .hero-text > *:nth-child(5) { animation-delay: 0.24s; }
+  .hero-text > *:nth-child(6) { animation-delay: 0.3s; }
+  .hero-portrait { animation-delay: 0.18s; }
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    :global(.hero-char) { opacity: 1; transform: none; animation: none; }
+    .hero-text > *, .hero-portrait { animation: none; }
   }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 3rem; padding-top: 3rem; }
-    .hero-left {
-      justify-content: center;
-      order: 2;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--hairline);
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 3.5rem 2rem;
     }
+    .hero-portrait { order: -1; align-self: start; max-width: 240px; }
     /* iOS Safari 對小於 16px 的輸入框會在聚焦時自動放大畫面 */
     .newsletter-input { font-size: 16px; }
     /* 擴大觸控範圍到約 44px，不改變外觀 */
     .writings-all { position: relative; }
     .writings-all::after { content: ''; position: absolute; inset: -8px -8px; }
-    .hero-right { order: 1; }
-    .hero-texture { display: none; }
-    .pillars-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .pillars-grid { grid-template-columns: 1fr; }
     .about-inner { grid-template-columns: 1fr; gap: 2.5rem; }
     .portrait-paper { max-width: 240px; }
-    .hero-stats { flex-wrap: wrap; gap: 1rem 0; }
-    .stat { padding: 0 1.4rem; }
+    .hero-stats { gap: 1.6rem 2rem; }
+    .newsletter-inner { padding: 2.4rem 1.6rem; }
   }
   /* 標題與副標題只在指定斷點換行，避免窄螢幕把一兩個字擠到下一行 */
   .hero-name .ph,
@@ -598,22 +556,4 @@ const pillars = CATEGORIES.map(c => ({
     { threshold: 0.15 }
   );
   document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
-
-  // ── 直排標題逐字進場 ──
-  (function () {
-    const title = document.querySelector('.hero-vtitle');
-    if (!title) return;
-    let ci = 0;
-    title.querySelectorAll('.vcol').forEach((col) => {
-      const chars = [...(col.textContent ?? '')];
-      col.textContent = '';
-      for (const ch of chars) {
-        const s = document.createElement('span');
-        s.className = 'hero-char';
-        s.style.setProperty('--ci', String(ci++));
-        s.textContent = ch;
-        col.appendChild(s);
-      }
-    });
-  })();
 </script>
