@@ -161,6 +161,12 @@ import { CATEGORIES, categoryMeta } from '../lib/posts';
     margin: 0;
     padding: 0;
   }
+  /* 每個項目各自置中：連結是文字、「精選文章」是含箭頭的按鈕，
+     不統一成 flex 的話兩者會用不同的基線對齊，按鈕會高 2.4px */
+  .nav-links > li {
+    display: flex;
+    align-items: center;
+  }
 
   .nav-links :global(a.nav-item),
   .nav-dropdown-btn {
