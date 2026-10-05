@@ -196,6 +196,20 @@ import { CATEGORIES, categoryMeta } from '../lib/posts';
 
   /* ── DROPDOWN ── */
   .nav-dropdown { position: relative; }
+  /* 按鈕與選單之間有 14px 空隙，滑鼠經過時會中斷 hover。
+     這塊看不見的「橋」把空隙補起來，只在選單打開時存在。 */
+  .nav-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 180px;
+    height: 18px;
+    transform: translateX(-50%);
+    display: none;
+  }
+  .nav-dropdown:hover::after,
+  .nav-dropdown:focus-within::after { display: block; }
   .nav-dropdown-btn {
     display: flex;
     align-items: center;
@@ -222,9 +236,11 @@ import { CATEGORIES, categoryMeta } from '../lib/posts';
     box-shadow: 0 12px 36px rgba(70, 50, 25, 0.14);
     padding: 0.45rem 0;
     transition: opacity 0.2s ease, transform 0.2s ease;
+    transition-delay: 0.12s;
   }
   .nav-dropdown:hover .dropdown-menu,
   .nav-dropdown:focus-within .dropdown-menu {
+    transition-delay: 0s;
     opacity: 1;
     transform: translateX(-50%) translateY(0);
     pointer-events: auto;
