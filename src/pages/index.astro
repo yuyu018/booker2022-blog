@@ -2,6 +2,7 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import { CATEGORIES, categoryMeta, getPosts, monthLabel, postUrl, readTime, type Post } from '../lib/posts';
 import { homeText as t, phrases } from '../lib/site';
+import ViewCounter from '../components/ViewCounter.astro';
 
 const posts = await getPosts();
 
@@ -168,6 +169,8 @@ const pillars = CATEGORIES.map(c => ({
       </form>
     </div>
   </section>
+
+  <ViewCounter />
 
 </PageLayout>
 

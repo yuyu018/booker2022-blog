@@ -77,3 +77,23 @@ const ogImage = new URL(image?.src ?? '/og-booker.png', Astro.url);
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
+
+<!-- 全站瀏覽次數：每開一頁加一次，數字只在首頁顯示 -->
+<script>
+  (async () => {
+    /* 自己在本機看的時候不計入 */
+    if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+
+    const slot = document.getElementById('site-views');
+    try {
+      const res = await fetch('/api/views', { method: 'POST' });
+      const data = (await res.json()) as { configured?: boolean; count?: number };
+      if (!slot || !data.configured || typeof data.count !== 'number') return;
+      const num = slot.querySelector('[data-views-num]');
+      if (num) num.textContent = data.count.toLocaleString('zh-TW');
+      slot.hidden = false;
+    } catch {
+      /* 計數失敗就讓它安靜地不顯示，不影響閱讀 */
+    }
+  })();
+</script>

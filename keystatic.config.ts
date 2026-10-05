@@ -167,6 +167,9 @@ export default config({
         newsletterDesc: para('電子報｜說明文字'),
         newsletterPlaceholder: fields.text({ label: '電子報｜輸入框提示文字' }),
         newsletterButton: fields.text({ label: '電子報｜按鈕文字' }),
+
+        viewsLabelBefore: fields.text({ label: '瀏覽次數｜數字前面的字', description: '例如「本站累計瀏覽」' }),
+        viewsLabelAfter: fields.text({ label: '瀏覽次數｜數字後面的字', description: '例如「次」' }),
       },
     }),
 
