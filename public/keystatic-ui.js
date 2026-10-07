@@ -57,6 +57,27 @@ async function loadBranches() {
   return data;
 }
 
+/* ── 深色／淺色 ──
+   後台預設跟著電腦的系統設定（kui-scheme--auto）。
+   這裡讓使用者自己選，選擇記在瀏覽器裡，下次進來沿用。 */
+const SCHEME_KEY = 'keystatic-root-color-scheme';
+const SCHEMES = ['auto', 'light', 'dark'];
+const SCHEME_LABEL = { auto: '🖥 跟隨系統', light: '☀️ 淺色', dark: '🌙 深色' };
+
+function readScheme() {
+  try {
+    const v = localStorage.getItem(SCHEME_KEY);
+    return SCHEMES.includes(v) ? v : 'auto';
+  } catch { return 'auto'; }
+}
+
+function applyScheme(scheme) {
+  const list = document.documentElement.classList;
+  for (const s of SCHEMES) list.remove(`kui-scheme--${s}`);
+  list.add(`kui-scheme--${scheme}`);
+  try { localStorage.setItem(SCHEME_KEY, scheme); } catch {}
+}
+
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -110,6 +131,15 @@ function render(bar, drafts) {
     go.href = branchHref(d.name);
     actions.append(go);
   }
+
+  const theme = el('button', 'bk-btn bk-btn-ghost bk-theme', SCHEME_LABEL[readScheme()]);
+  theme.title = '切換後台的深色／淺色';
+  theme.addEventListener('click', () => {
+    const next = SCHEMES[(SCHEMES.indexOf(readScheme()) + 1) % SCHEMES.length];
+    applyScheme(next);
+    theme.textContent = SCHEME_LABEL[next];
+  });
+  actions.append(theme);
 
   bar.append(actions);
 }
@@ -198,6 +228,26 @@ function styles() {
   /* 狀態列會蓋住畫面底部，實際高度由 JS 量出來寫進這個變數 */
   body { padding-bottom: var(--bk-bar-space, 72px); }
 
+  /* 後台切到深色時，狀態列也跟著深色，才不會一塊白的突兀 */
+  .kui-scheme--dark .bk-bar,
+  .kui-scheme--auto .bk-bar { }
+  @media (prefers-color-scheme: dark) {
+    .kui-scheme--auto .bk-bar { background: #252525; border-top-color: #3A3A3A; color: #EDEAE6; }
+    .kui-scheme--auto .bk-note { color: #B8B2AA; }
+    .kui-scheme--auto .bk-btn-ghost { background: #333; color: #D8D2CA; }
+    .kui-scheme--auto .bk-btn-ghost:hover { background: #454545; color: #fff; }
+    .kui-scheme--auto .bk-modal-box { background: #252525; }
+    .kui-scheme--auto .bk-modal-title { color: #EDEAE6; }
+    .kui-scheme--auto .bk-modal-text { color: #B8B2AA; }
+  }
+  .kui-scheme--dark .bk-bar { background: #252525; border-top-color: #3A3A3A; color: #EDEAE6; }
+  .kui-scheme--dark .bk-note { color: #B8B2AA; }
+  .kui-scheme--dark .bk-btn-ghost { background: #333; color: #D8D2CA; }
+  .kui-scheme--dark .bk-btn-ghost:hover { background: #454545; color: #fff; }
+  .kui-scheme--dark .bk-modal-box { background: #252525; }
+  .kui-scheme--dark .bk-modal-title { color: #EDEAE6; }
+  .kui-scheme--dark .bk-modal-text { color: #B8B2AA; }
+
   .bk-modal {
     position: fixed; inset: 0; z-index: 1000;
     display: flex; align-items: center; justify-content: center; padding: 20px;
@@ -224,6 +274,7 @@ function styles() {
 }
 
 async function start() {
+  applyScheme(readScheme());
   if (!isGithubMode()) return;
   styles();
   const bar = el('div', 'bk-bar');
