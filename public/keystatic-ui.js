@@ -12,7 +12,7 @@
 const REPO = 'yuyu018/booker2022-blog';
 const DEFAULT_BRANCH = 'main';
 const CACHE_KEY = 'booker-branch-cache';
-const CACHE_MS = 60_000;
+const CACHE_MS = 15_000;
 
 /** 從網址讀出目前編輯的分支；本機模式沒有 /branch/ 這段 */
 function currentBranch() {
@@ -34,12 +34,15 @@ function branchHref(name) {
     : `/keystatic/branch/${encodeURIComponent(name)}`;
 }
 
-async function loadBranches() {
+function readCache() {
   try {
     const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
     if (cached && Date.now() - cached.at < CACHE_MS) return cached.data;
   } catch {}
+  return null;
+}
 
+async function fetchBranches() {
   const [branches, pulls] = await Promise.all([
     fetch(`https://api.github.com/repos/${REPO}/branches?per_page=100`).then((r) => (r.ok ? r.json() : [])),
     fetch(`https://api.github.com/repos/${REPO}/pulls?state=open&per_page=100`).then((r) => (r.ok ? r.json() : [])),
@@ -48,10 +51,22 @@ async function loadBranches() {
   const prByBranch = {};
   for (const p of pulls) prByBranch[p.head?.ref] = { number: p.number, url: p.html_url };
 
-  const data = branches
-    .map((b) => b.name)
-    .filter((n) => n !== DEFAULT_BRANCH)
-    .map((n) => ({ name: n, pr: prByBranch[n] || null }));
+  const names = branches.map((b) => b.name).filter((n) => n !== DEFAULT_BRANCH);
+
+  /* 合併完的分支若沒刪，PR 已關閉、內容也不領先 main，
+     不能再標成「尚未送審」，否則會一直催使用者送一份已經上線的稿。 */
+  const data = await Promise.all(
+    names.map(async (name) => {
+      let ahead = 1;
+      try {
+        const cmp = await fetch(
+          `https://api.github.com/repos/${REPO}/compare/${DEFAULT_BRANCH}...${encodeURIComponent(name)}`,
+        ).then((r) => (r.ok ? r.json() : null));
+        if (cmp && typeof cmp.ahead_by === 'number') ahead = cmp.ahead_by;
+      } catch {}
+      return { name, pr: prByBranch[name] || null, ahead };
+    }),
+  );
 
   try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch {}
   return data;
@@ -89,7 +104,8 @@ function render(bar, drafts) {
   const branch = currentBranch() ?? DEFAULT_BRANCH;
   const onDefault = branch === DEFAULT_BRANCH;
   const mine = drafts.find((d) => d.name === branch);
-  const unsent = drafts.filter((d) => !d.pr);
+  /* 有新內容、又還沒開審稿的，才算「還沒送審」 */
+  const unsent = drafts.filter((d) => !d.pr && d.ahead !== 0);
   bar.textContent = '';
 
   const status = el('div', 'bk-status');
@@ -98,7 +114,12 @@ function render(bar, drafts) {
   status.append(label);
 
   if (!onDefault) {
-    status.append(el('span', 'bk-note', mine?.pr ? `已送審 #${mine.pr.number}，等網站主人合併` : '尚未送審'));
+    const state = mine?.pr
+      ? `已送審 #${mine.pr.number}，等網站主人合併`
+      : mine?.ahead === 0
+        ? '內容已經上線，這份草稿可以刪掉了'
+        : '尚未送審';
+    status.append(el('span', 'bk-note', state));
   } else if (unsent.length) {
     status.append(el('span', 'bk-note bk-warn', `你有 ${unsent.length} 份草稿還沒送審，請接續編輯，不要再開新的`));
   }
@@ -113,6 +134,13 @@ function render(bar, drafts) {
       view.target = '_blank';
       view.rel = 'noopener';
       actions.append(view);
+    } else if (mine?.ahead === 0) {
+      /* 這份草稿的內容已經在正式版裡，送審會是一份空的，改提示刪除 */
+      const del = el('a', 'bk-btn bk-btn-ghost', '去刪掉這份草稿');
+      del.href = `https://github.com/${REPO}/branches`;
+      del.target = '_blank';
+      del.rel = 'noopener';
+      actions.append(del);
     } else {
       const send = el('a', 'bk-btn bk-btn-primary', '送出審稿');
       send.href = `https://github.com/${REPO}/compare/${DEFAULT_BRANCH}...${encodeURIComponent(branch)}?expand=1`;
@@ -127,6 +155,7 @@ function render(bar, drafts) {
 
   for (const d of drafts) {
     if (d.name === branch) continue;
+    if (d.ahead === 0 && !d.pr) continue;   /* 已合併又沒刪的分支不用再提 */
     const go = el('a', 'bk-btn bk-btn-ghost', (d.pr ? '已送審・' : '繼續編輯・') + d.name);
     go.href = branchHref(d.name);
     actions.append(go);
@@ -287,7 +316,10 @@ async function start() {
   addEventListener('resize', syncSpace);
 
   try {
-    const drafts = await loadBranches();
+    const cached = readCache();
+    if (cached) { render(bar, cached); syncSpace(); }
+
+    const drafts = await fetchBranches();
     render(bar, drafts);
     syncSpace();
     guardNewBranch(drafts);
