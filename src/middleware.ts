@@ -13,7 +13,9 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const html = await response.text();
   /* 後台頁面沒有宣告 <meta charset>，傳統 script 會被當成 Latin-1 讀成亂碼；
      module script 規範保證以 UTF-8 解讀，所以用 type="module" */
-  const tag = '<script type="module" src="/keystatic-zh.js"></script>';
+  const tag =
+    '<script type="module" src="/keystatic-zh.js"></script>' +
+    '<script type="module" src="/keystatic-ui.js"></script>';
   /* 後台頁面不是套我們的版型，不一定有 </body>，沒有就直接接在最後面 */
   const patched = html.includes('</body>') ? html.replace('</body>', tag + '</body>') : html + tag;
 
