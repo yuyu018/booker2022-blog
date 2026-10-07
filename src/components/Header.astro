@@ -354,9 +354,27 @@ import { CATEGORIES, categoryMeta } from '../lib/posts';
   const navbar = document.querySelector('.navbar');
 
   // ── 捲動後縮小導覽列，換成精簡商標 ──
-  const setScrolled = () => navbar?.classList.toggle('scrolled', window.scrollY > 8);
-  setScrolled();
-  window.addEventListener('scroll', setScrolled, { passive: true });
+  // 縮放會讓版面變矮、捲動位置跟著變，如果進出用同一個門檻就會來回切換（導覽列抖動）。
+  // 所以進入與離開用不同門檻，中間留一段緩衝區，並且每一幀只判斷一次。
+  const SHRINK_AT = 72;
+  const EXPAND_AT = 24;
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    if (!navbar) return;
+    const y = window.scrollY;
+    const shrunk = navbar.classList.contains('scrolled');
+    if (!shrunk && y > SHRINK_AT) navbar.classList.add('scrolled');
+    else if (shrunk && y < EXPAND_AT) navbar.classList.remove('scrolled');
+  };
+
+  update();
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
 
   // ── Mobile hamburger toggle ──
   const hamburger = document.getElementById('hamburger');
