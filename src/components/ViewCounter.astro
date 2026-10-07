@@ -1,0 +1,28 @@
+---
+import { homeText as t } from '../lib/site';
+---
+
+<!-- 數字由 BaseHead 的計數腳本填入；沒接上資料庫時整塊保持隱藏 -->
+<p class="views" id="site-views" hidden>
+  <span>{t.viewsLabelBefore}</span>
+  <span class="views-num" data-views-num>—</span>
+  <span>{t.viewsLabelAfter}</span>
+</p>
+
+<style>
+  .views {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.16em;
+    margin: 0;
+    padding: 0 2rem calc(var(--space-section) * 0.6);
+  }
+  .views-num {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    color: var(--accent-deep);
+    margin: 0 0.3em;
+    letter-spacing: 0.06em;
+  }
+</style>

@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from 'astro';
+import CategoryPage from '../../../components/CategoryPage.astro';
+import { CATEGORIES, getPostsByCategory } from '../../../lib/posts';
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  /* getStaticPaths 在 Astro 是獨立作用域，常數要寫在裡面 */
+  const PER_PAGE = 20;
+  const pages = await Promise.all(
+    CATEGORIES.map(async (category) => {
+      const posts = await getPostsByCategory(category);
+      return paginate(posts, { params: { category }, pageSize: PER_PAGE });
+    }),
+  );
+  return pages.flat();
+};
+
+const { page } = Astro.props;
+const { category } = Astro.params;
+---
+
+<CategoryPage slug={category as any} page={page} />

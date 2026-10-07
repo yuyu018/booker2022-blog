@@ -84,6 +84,11 @@ export default config({
           description: '可留空。每個標籤按一次「新增」加一項',
           itemLabel: (props) => props.value,
         }),
+        draft: fields.checkbox({
+          label: '下架',
+          description: '打勾後這篇文章就不會出現在網站上（文章不會被刪除，隨時可以取消打勾放回去）',
+          defaultValue: false,
+        }),
         /* 圖片會放進 src/assets/fb/<文章代號>/，這是 Keystatic 的固定規則 */
         heroImage: fields.image({
           label: '主視覺圖',
@@ -162,6 +167,9 @@ export default config({
         newsletterDesc: para('電子報｜說明文字'),
         newsletterPlaceholder: fields.text({ label: '電子報｜輸入框提示文字' }),
         newsletterButton: fields.text({ label: '電子報｜按鈕文字' }),
+
+        viewsLabelBefore: fields.text({ label: '瀏覽次數｜數字前面的字', description: '例如「本站累計瀏覽」' }),
+        viewsLabelAfter: fields.text({ label: '瀏覽次數｜數字後面的字', description: '例如「次」' }),
       },
     }),
 
@@ -326,6 +334,12 @@ export default config({
         heroDescAfter: fields.text({ label: '說明文字｜數字後面那段' }),
         groupLinkBefore: fields.text({ label: '各分類連結｜數字前面', description: '例如「全部」' }),
         groupLinkAfter: fields.text({ label: '各分類連結｜數字後面', description: '例如「篇 →」' }),
+
+        searchLabel: fields.text({ label: '搜尋｜欄位標題' }),
+        searchPlaceholder: fields.text({ label: '搜尋｜輸入框提示文字' }),
+        searchClear: fields.text({ label: '搜尋｜清除按鈕說明' }),
+        pagerPrev: fields.text({ label: '分頁｜上一頁' }),
+        pagerNext: fields.text({ label: '分頁｜下一頁' }),
 
         categoryLabelZh: fields.text({ label: '分類頁｜中文小標' }),
         categoryCountBefore: fields.text({ label: '分類頁｜篇數前面', description: '例如「共」' }),

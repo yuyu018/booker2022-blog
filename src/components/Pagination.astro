@@ -1,0 +1,99 @@
+---
+import { blogText as t } from '../lib/site';
+
+interface Props {
+  current: number;
+  total: number;
+  url: { prev?: string; next?: string };
+  /** 頁碼連結的前綴，例如 /blog/life */
+  base: string;
+}
+const { current, total, url, base } = Astro.props;
+
+/* 頁碼：永遠顯示頭尾與目前頁前後各一頁，其餘用省略號 */
+const nums: (number | '…')[] = [];
+for (let i = 1; i <= total; i++) {
+  if (i === 1 || i === total || Math.abs(i - current) <= 1) nums.push(i);
+  else if (nums[nums.length - 1] !== '…') nums.push('…');
+}
+const href = (n: number) => (n === 1 ? `${base}/` : `${base}/${n}/`);
+---
+
+{total > 1 && (
+  <nav class="pager" aria-label="分頁">
+    {url.prev ? (
+      <a class="pager-arrow" href={url.prev}>← {t.pagerPrev}</a>
+    ) : (
+      <span class="pager-arrow is-off">← {t.pagerPrev}</span>
+    )}
+
+    <div class="pager-nums">
+      {nums.map(n =>
+        n === '…' ? (
+          <span class="pager-gap">…</span>
+        ) : n === current ? (
+          <span class="pager-num is-current" aria-current="page">{n}</span>
+        ) : (
+          <a class="pager-num" href={href(n)}>{n}</a>
+        ),
+      )}
+    </div>
+
+    {url.next ? (
+      <a class="pager-arrow" href={url.next}>{t.pagerNext} →</a>
+    ) : (
+      <span class="pager-arrow is-off">{t.pagerNext} →</span>
+    )}
+  </nav>
+)}
+
+<style>
+  .pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .pager-nums { display: flex; align-items: center; gap: 0.35rem; }
+  .pager-num,
+  .pager-gap {
+    min-width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .pager-num:hover { background: var(--bg-soft); color: var(--ink); }
+  .pager-num.is-current {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  .pager-gap { color: var(--ink-faint); }
+
+  .pager-arrow {
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    padding: 0.4rem 0;
+    transition: color 0.2s;
+  }
+  .pager-arrow:hover { color: var(--accent-deep); }
+  .pager-arrow.is-off { color: var(--ink-faint); opacity: 0.5; }
+
+  @media (max-width: 560px) {
+    .pager { justify-content: center; }
+    .pager-nums { order: -1; width: 100%; justify-content: center; margin-bottom: 0.6rem; }
+  }
+</style>

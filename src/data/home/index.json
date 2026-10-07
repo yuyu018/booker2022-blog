@@ -50,6 +50,8 @@
   "portraitCaption": "作者・布克小姐",
   "newsletterTitle": "訂閱布克小姐電子報",
   "newsletterDesc": "每兩週一封，精選最值得閱讀的文章與思考片段。不濫發，不喧嘩。",
-  "newsletterPlaceholder": "iambooker2022@gmail.com",
-  "newsletterButton": "訂閱"
+  "newsletterPlaceholder": "你的電子郵件地址",
+  "newsletterButton": "訂閱",
+  "viewsLabelBefore": "本站累計瀏覽",
+  "viewsLabelAfter": "次"
 }

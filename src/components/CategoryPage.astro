@@ -1,18 +1,25 @@
 ---
+import type { Page } from 'astro';
 import PageLayout from '../layouts/PageLayout.astro';
 import PageHero from './PageHero.astro';
-import { categoryMeta, getPostsByCategory, monthLabel, postUrl, readTime, type Category } from '../lib/posts';
+import PostSearch from './PostSearch.astro';
+import Pagination from './Pagination.astro';
+import { categoryMeta, monthLabel, postUrl, readTime, type Category, type Post } from '../lib/posts';
 import { blogText as t, site } from '../lib/site';
 
 interface Props {
   slug: Category;
+  page: Page<Post>;
 }
-const { slug } = Astro.props;
+const { slug, page } = Astro.props;
 const meta = categoryMeta[slug];
-const posts = await getPostsByCategory(slug);
+const base = `/blog/${slug}`;
 ---
 
-<PageLayout title={`${meta.title} — ${site.siteTitle}`} description={meta.desc}>
+<PageLayout
+  title={page.currentPage > 1 ? `${meta.title}（第 ${page.currentPage} 頁）— ${site.siteTitle}` : `${meta.title} — ${site.siteTitle}`}
+  description={meta.desc}
+>
 
   <PageHero label={meta.labelEn} labelZh={t.categoryLabelZh} title={meta.title}>
     {meta.desc}
@@ -20,25 +27,34 @@ const posts = await getPostsByCategory(slug);
 
   <section class="cat-list-section">
     <div class="section-inner">
-      <div class="cat-count">{`${t.categoryCountBefore} ${posts.length} ${t.categoryCountAfter}`}</div>
+      <PostSearch category={meta.title} />
 
-      {posts.length === 0 && (
-        <p class="cat-empty">{t.categoryEmpty}</p>
-      )}
+      <div data-search-hides>
+        <div class="cat-count">
+          {`${t.categoryCountBefore} ${page.total} ${t.categoryCountAfter}`}
+          {page.lastPage > 1 && <span class="cat-page">・第 {page.currentPage} / {page.lastPage} 頁</span>}
+        </div>
 
-      {posts.map((p, i) => (
-        <a href={postUrl(p)} class="writing-row">
-          <span class="writing-num">{String(i + 1).padStart(2, '0')}</span>
-          <div>
-            <h3 class="writing-title">{p.data.title}</h3>
-            <p class="writing-excerpt">{p.data.description}</p>
-          </div>
-          <div class="writing-meta">
-            <span>{readTime(p)}</span><span class="m-dot">・</span>
-            <span>{monthLabel(p.data.pubDate)}</span>
-          </div>
-        </a>
-      ))}
+        {page.total === 0 && (
+          <p class="cat-empty">{t.categoryEmpty}</p>
+        )}
+
+        {page.data.map((p, i) => (
+          <a href={postUrl(p)} class="writing-row">
+            <span class="writing-num">{String(page.start + i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="writing-title">{p.data.title}</h3>
+              <p class="writing-excerpt">{p.data.description}</p>
+            </div>
+            <div class="writing-meta">
+              <span>{readTime(p)}</span><span class="m-dot">・</span>
+              <span>{monthLabel(p.data.pubDate)}</span>
+            </div>
+          </a>
+        ))}
+
+        <Pagination current={page.currentPage} total={page.lastPage} url={page.url} base={base} />
+      </div>
 
       <div class="cat-more">
         <p class="cat-more-text">{t.categoryMoreText}</p>
@@ -53,7 +69,7 @@ const posts = await getPostsByCategory(slug);
 </PageLayout>
 
 <style>
-  .cat-list-section { padding: 3.5rem 2rem 5rem; }
+  .cat-list-section { padding: calc(var(--space-section) * 0.6) 2rem var(--space-section); }
   .cat-count {
     font-size: 0.74rem;
     color: var(--ink-muted);

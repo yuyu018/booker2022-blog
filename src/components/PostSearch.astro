@@ -1,0 +1,221 @@
+---
+import { blogText as t } from '../lib/site';
+
+interface Props {
+  /** 只搜尋某個分類時傳中文分類名，留空代表搜尋全站 */
+  category?: string;
+}
+const { category } = Astro.props;
+---
+
+<div class="search" data-category={category ?? ''}>
+  <label class="search-label" for="post-search">{t.searchLabel}</label>
+  <div class="search-field">
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path>
+    </svg>
+    <input
+      type="search"
+      id="post-search"
+      class="search-input"
+      placeholder={t.searchPlaceholder}
+      autocomplete="off"
+    />
+    <button type="button" class="search-clear" hidden aria-label={t.searchClear}>×</button>
+  </div>
+
+  <div class="search-results" hidden>
+    <p class="search-count"></p>
+    <div class="search-list"></div>
+  </div>
+</div>
+
+<style>
+  .search { margin-bottom: 2.5rem; }
+  .search-label {
+    display: block;
+    font-size: 0.74rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.7rem;
+  }
+  .search-field {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.7rem 1.2rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .search-field:focus-within {
+    border-color: var(--accent-soft);
+    box-shadow: var(--shadow-soft);
+  }
+  .search-icon { color: var(--ink-faint); flex: none; }
+  .search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .search-input::placeholder { color: var(--ink-faint); }
+  .search-input::-webkit-search-cancel-button { display: none; }
+  .search-clear {
+    border: none;
+    background: transparent;
+    color: var(--ink-faint);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.2rem;
+  }
+  .search-clear:hover { color: var(--accent); }
+
+  .search-results { margin-top: 1.6rem; }
+  .search-count {
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    margin: 0 0 1rem;
+  }
+  .search-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .search-hit {
+    display: block;
+    background: var(--bg-surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 1.2rem 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .search-hit:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .search-hit-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    margin: 0 0 0.4rem;
+    letter-spacing: 0.06em;
+  }
+  .search-hit-excerpt {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.9;
+    margin: 0 0 0.5rem;
+  }
+  .search-hit-meta {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+  .search-hit :global(mark) {
+    background: var(--accent-soft);
+    color: var(--ink);
+    border-radius: 3px;
+    padding: 0 2px;
+  }
+
+  @media (max-width: 768px) {
+    /* iOS Safari 對小於 16px 的輸入框會在聚焦時自動放大畫面 */
+    .search-input { font-size: 16px; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.search');
+  if (root) {
+    const input = root.querySelector<HTMLInputElement>('.search-input')!;
+    const clearBtn = root.querySelector<HTMLButtonElement>('.search-clear')!;
+    const results = root.querySelector<HTMLElement>('.search-results')!;
+    const count = root.querySelector<HTMLElement>('.search-count')!;
+    const list = root.querySelector<HTMLElement>('.search-list')!;
+    const onlyCategory = root.dataset.category || '';
+    /* 頁面上原本的文章清單，搜尋時先收起來 */
+    const pageList = document.querySelector<HTMLElement>('[data-search-hides]');
+
+    type Hit = { t: string; d: string; c: string; u: string; y: string };
+    let index: Hit[] | null = null;
+    let loading: Promise<Hit[]> | null = null;
+
+    const load = () => {
+      if (index) return Promise.resolve(index);
+      if (!loading) {
+        loading = fetch('/search-index.json')
+          .then((r) => r.json())
+          .then((data: Hit[]) => {
+            index = onlyCategory ? data.filter((h) => h.c === onlyCategory) : data;
+            return index;
+          });
+      }
+      return loading;
+    };
+
+    const escapeHtml = (s: string) =>
+      s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    const highlight = (text: string, q: string) => {
+      const safe = escapeHtml(text);
+      if (!q) return safe;
+      const needle = escapeHtml(q);
+      const i = safe.toLowerCase().indexOf(needle.toLowerCase());
+      if (i < 0) return safe;
+      return safe.slice(0, i) + '<mark>' + safe.slice(i, i + needle.length) + '</mark>' + safe.slice(i + needle.length);
+    };
+
+    const render = (hits: Hit[], q: string) => {
+      count.textContent = hits.length
+        ? `找到 ${hits.length} 篇`
+        : '找不到符合的文章，換個關鍵字試試';
+      list.innerHTML = hits
+        .slice(0, 40)
+        .map(
+          (h) => `<a class="search-hit" href="${h.u}">
+            <h3 class="search-hit-title">${highlight(h.t, q)}</h3>
+            <p class="search-hit-excerpt">${highlight(h.d.slice(0, 80), q)}…</p>
+            <span class="search-hit-meta">${escapeHtml(h.c)}・${escapeHtml(h.y)}</span>
+          </a>`,
+        )
+        .join('');
+    };
+
+    let timer: number | undefined;
+    const run = async () => {
+      const q = input.value.trim();
+      clearBtn.hidden = !q;
+
+      if (!q) {
+        results.hidden = true;
+        if (pageList) pageList.hidden = false;
+        return;
+      }
+
+      const data = await load();
+      const needle = q.toLowerCase();
+      const hits = data.filter(
+        (h) => h.t.toLowerCase().includes(needle) || h.d.toLowerCase().includes(needle),
+      );
+      render(hits, q);
+      results.hidden = false;
+      if (pageList) pageList.hidden = true;
+    };
+
+    input.addEventListener('input', () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(run, 160);
+    });
+    /* 滑鼠移到搜尋框就先把索引抓下來，打字時不用等 */
+    input.addEventListener('focus', load, { once: true });
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      input.focus();
+      run();
+    });
+  }
+</script>

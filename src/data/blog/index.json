@@ -14,5 +14,10 @@
   "categoryEmpty": "這個主題的文章正在醞釀中。",
   "categoryMoreText": "持續更新中，歡迎訂閱電子報，第一時間收到新文章。",
   "categoryMoreBtnPrimary": "訂閱電子報",
-  "categoryMoreBtnSecondary": "瀏覽其他主題"
+  "categoryMoreBtnSecondary": "瀏覽其他主題",
+  "searchLabel": "搜尋文章",
+  "searchPlaceholder": "輸入關鍵字，例如：投資、瑜珈、書名",
+  "searchClear": "清除搜尋",
+  "pagerPrev": "上一頁",
+  "pagerNext": "下一頁"
 }
